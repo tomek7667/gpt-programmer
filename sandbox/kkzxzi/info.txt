@@ -1,5 +1,0 @@
-
-https://www.simplilearn.com/top-python-libraries-for-data-science-article
-https://www.datacamp.com/blog/top-python-libraries-for-data-science
-https://365datascience.com/tutorials/python-tutorials/best-python-libraries/
-        

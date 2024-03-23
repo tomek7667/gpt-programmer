@@ -1,10 +1,21 @@
 import os
+import g4f.client
+import requests
+import json
 from googlesearch import search
 from BaseApi import BaseApi
+from bs4 import BeautifulSoup
 
 
 class DeveloperApi(BaseApi):
-	available_commands = ["CREATE_CODE", "RUN_SHELL_COMMAND", "READ_FILE", "GOOGLE", "NEXT_TASK"]
+	available_commands = [
+		"CREATE_CODE",
+		"RUN_SHELL_COMMAND",
+		"READ_FILE",
+		"GOOGLE",
+		"NEXT_TASK",
+		"VISIT_LINK",
+	]
 
 	def __init__(
 		self,
@@ -12,15 +23,21 @@ class DeveloperApi(BaseApi):
 		developers_amount: int,
 		max_depth=5,
 		model="gpt-3.5-turbo",
+		provider=None,
+		verbose=False,
+		client=g4f.client.Client,
 	):
 		super().__init__(
 			context=open("./g4f-api/contexts/developer.txt", "r")
 			.read()
 			.replace("{{AGENT_NAME}}", agent_name)
-			.replace("{{DEVELOPERS_AMOUNT}}", str(developers_amount)),
+			.replace("{{DEVELOPERS_AMOUNT}}", str(developers_amount - 1)),
 			available_commands=self.available_commands,
 			max_depth=max_depth,
 			model=model,
+			provider=provider,
+			verbose=verbose,
+   			client=client
 		)
 
 	def create_code(self, content: str):
@@ -53,15 +70,14 @@ class DeveloperApi(BaseApi):
 		for shellcommand in shellcommands:
 			command = shellcommand.strip()
 			open(f"{self.sandbox_base}/output.log", "a").write(f">>> {command}\n")
-			os.system(f"cd {self.sandbox_base} && {command} > tmp.log")
+			os.system(f"cd {self.sandbox_base} && {command} > tmp.log 2>&1")
 			cmd_output = open(f"{self.sandbox_base}/tmp.log", "r").read()
 			open(f"{self.sandbox_base}/output.log", "a").write(cmd_output)
 			outputs.append({"command": command, "output": cmd_output})
-		outputs_txt = "\n".join(
-			[f"{output['command']}:\n{output['output']}" for output in outputs]
-		)
+			os.remove(f"{self.sandbox_base}/tmp.log")
+		outputs_txt = json.dumps(outputs)
 		self.perform_task(
-			f"Here are the outputs of the commands you requested:\n{outputs_txt}",
+			outputs_txt,
 			role="system",
 		)
 		return "COMMAND_EXECUTED"
@@ -75,10 +91,10 @@ class DeveloperApi(BaseApi):
 			file_path = raw_file.strip()
 			with open(self.sandbox_base + "/" + file_path, "r") as f:
 				files.append({"file_path": file_path, "content": f.read()})
-		files_txt = "\n".join(
-			[f"{file['file_path']}:\n{file['content']}" for file in files]
+		files_txt = json.dumps(files)
+		self.perform_task(
+			files_txt, role="system"
 		)
-		self.perform_task(f"Here are the files you requested:\n{files_txt}", role="system")
 		return "COMMAND_EXECUTED"
 
 	def google(self, content: str):
@@ -118,19 +134,30 @@ class DeveloperApi(BaseApi):
 					],
 				}
 			)
-		results_txt = "\n".join(
-			[
-				f"SEARCH TERM: {result['search_term']}:\n"
-				+ "\n".join(
-					[
-						f"Title: {r['title']}\nLink: {r['link']}\nDescription: {r['description']}\n\n"
-						for r in result["results"]
-					]
-				)
-				for result in results
-			]
-		)
+		results_txt = json.dumps(results)
 		self.perform_task(
-			f"Here are the search results you have requested:\n{results_txt}", role="system"
+			results_txt,
+			role="system",
 		)
+		return "COMMAND_EXECUTED"
+
+	def visit_link(self, content: str):
+		links = content.split("{{LINKS}}")[1].split("{{/LINKS}}")[0]
+		links = links.split("{{LINK}}")[1:]
+		links = [link.split("{{/LINK}}")[0].strip() for link in links]
+		print("DEBUG")
+		print(links)
+		contents = []
+		for link in links:
+			raw_html = requests.get(link).text
+			soup = BeautifulSoup(raw_html, "html.parser")
+			text = soup.get_text()
+			contents.append({"link": link, "content": text})
+		contents_txt = json.dumps(contents)
+		print(contents_txt)
+		self.perform_task(
+			contents_txt,
+			role="system",
+		)
+
 		return "COMMAND_EXECUTED"
