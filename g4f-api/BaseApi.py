@@ -1,5 +1,5 @@
 import g4f.client
-import time
+import os
 import json
 import random
 import string
@@ -13,6 +13,8 @@ class BaseApi:
 		self.available_commands = available_commands
 		self.id = ''.join(random.choices(string.ascii_lowercase, k=6))
 		self.sandbox_base = f"sandbox/{self.id}"
+		os.makedirs(self.sandbox_base, exist_ok=True)
+		print(f"Initialized API with ID: {self.id}")
 		self.history.append({
 			"role": "system",
 			"content": f"Here is the context you must follow. Under no circumstances should you deviate from this context. {{CONTEXT}}{context}{{/CONTEXT}}"
@@ -69,7 +71,7 @@ class BaseApi:
 
 	def determine_command(self, content: str) -> str:
 		try:
-			command = content.split("{{COMMAND}}")[1].split("{{/COMMAND}}")[0]
+			command = content.split("{{COMMAND}}")[1].split("{{/COMMAND}}")[0].strip()
 			if command in self.available_commands:
 				return eval(f"self.{command.lower()}(content)")
 			else:
