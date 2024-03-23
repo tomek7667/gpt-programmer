@@ -1,18 +1,21 @@
 from DeveloperApi import DeveloperApi
 
 prompts = [
-	"Create 5 files that will contain 7 random characters",
-	"Read the content of the files you created",
-	"write a text file with combined read content"
+	"Search for the best Python libraries for data science in 2024. I want only verified sources. Just have them in mind",
+	"Write links to 'info.txt' file",
 ]
 
+
 def main():
-	api = DeveloperApi(
+	developer = DeveloperApi(
 		agent_name="John",
 		developers_amount=1,
+		model="airoboros-70b"
 	)
 	for prompt in prompts:
-		api.ask_model(prompt)
-	api.save(api.sandbox_base + f"/debug.log.json")
+		developer.perform_task(prompt)
+
+	developer.save_log(developer.sandbox_base + f"/debug.log.json")
+
 if __name__ == "__main__":
 	main()
