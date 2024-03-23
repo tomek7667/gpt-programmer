@@ -6,6 +6,8 @@ from googlesearch import search
 from BaseApi import BaseApi
 from bs4 import BeautifulSoup
 
+WARNING_PREFIX = "THIS IS NOT A QUESTION PROMPT, THE FOLLOWING IS THE INFORMATION BASE FOR THE AI AGENT\nOUTPUT="
+
 
 class DeveloperApi(BaseApi):
 	available_commands = [
@@ -56,7 +58,7 @@ class DeveloperApi(BaseApi):
 
 			with open(p, "w") as f:
 				f.write(file["code"])
-		return "COMMAND_EXECUTED"
+		return "COMMAND_EXECUTED_SUCCESS"
 
 	def run_shell_command(self, content: str):
 		raw_commands = content.split("{{SHELL_COMMANDS}}")[1].split(
@@ -77,10 +79,10 @@ class DeveloperApi(BaseApi):
 			os.remove(f"{self.sandbox_base}/tmp.log")
 		outputs_txt = json.dumps(outputs)
 		self.perform_task(
-			outputs_txt,
+			WARNING_PREFIX + outputs_txt,
 			role="system",
 		)
-		return "COMMAND_EXECUTED"
+		return "COMMAND_EXECUTED_SUCCESS"
 
 	def read_file(self, content: str):
 		raw_files = content.split("{{FILES}}")[1].split("{{/FILES}}")[0]
@@ -93,9 +95,9 @@ class DeveloperApi(BaseApi):
 				files.append({"file_path": file_path, "content": f.read()})
 		files_txt = json.dumps(files)
 		self.perform_task(
-			files_txt, role="system"
+			WARNING_PREFIX + files_txt, role="system"
 		)
-		return "COMMAND_EXECUTED"
+		return "COMMAND_EXECUTED_SUCCESS"
 
 	def google(self, content: str):
 		search_terms = content.split("{{SEARCH_TERMS}}")[1].split("{{/SEARCH_TERMS}}")[
@@ -136,10 +138,10 @@ class DeveloperApi(BaseApi):
 			)
 		results_txt = json.dumps(results)
 		self.perform_task(
-			results_txt,
+			WARNING_PREFIX + results_txt,
 			role="system",
 		)
-		return "COMMAND_EXECUTED"
+		return "COMMAND_EXECUTED_SUCCESS"
 
 	def visit_link(self, content: str):
 		links = content.split("{{LINKS}}")[1].split("{{/LINKS}}")[0]
@@ -156,8 +158,8 @@ class DeveloperApi(BaseApi):
 		contents_txt = json.dumps(contents)
 		print(contents_txt)
 		self.perform_task(
-			contents_txt,
+			WARNING_PREFIX + contents_txt,
 			role="system",
 		)
 
-		return "COMMAND_EXECUTED"
+		return "COMMAND_EXECUTED_SUCCESS"

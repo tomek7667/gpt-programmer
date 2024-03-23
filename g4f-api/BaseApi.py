@@ -76,7 +76,9 @@ class BaseApi:
 			)
 		if self.verbose:
 			self.save_log(self.sandbox_base + f"/debug.log.json")
-		if output != "NEXT_TASK":
+   
+		# TODO: Remove 'COMMAND_EXECUTED_SUCCESS' from this condition in order to allow the agent to perform multiple commands for one task
+		if output != "NEXT_TASK" and output != "COMMAND_EXECUTED_SUCCESS":
 			return self.perform_task(output, role="system", depth=depth + 1)
 
 		# TODO: Here add verifier for the job of the agent
@@ -101,4 +103,4 @@ class BaseApi:
 				print(e)
 				self.save_log(self.sandbox_base + f"/faulty_model.log.json")
 			# self.history.pop()
-			return f"INVALID_COMMAND_FORMAT. You have completely failed and forgot your context. The only available commands are: {self.available_commands}. Remember to wrap them correctly as shown in your context: {{{{COMMAND}}}}SOME_ACTION{{{{/COMMAND}}}}."
+			return f"INVALID_COMMAND_FORMAT"

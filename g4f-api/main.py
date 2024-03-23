@@ -18,9 +18,9 @@ def main():
 		developer = DeveloperApi(
 			agent_name="John",
 			developers_amount=1,
-			model="deepseek-ai_deepseek-coder-6.7b-instruct",
+			# model="deepseek-ai_deepseek-coder-6.7b-instruct",
 			verbose=True,
-   			client=Client
+   			# client=Client
 		)
 		for prompt in prompts:
 			developer.perform_task(prompt)
