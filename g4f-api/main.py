@@ -1,8 +1,9 @@
 from DeveloperApi import DeveloperApi
 
 prompts = [
-	"Create a python program that will create an array of all permutations of letters 'lucjan'. Print the array. and then print length of this array",
-	"Run the program"
+	"Create 5 files that will contain 7 random characters",
+	"Read the content of the files you created",
+	"write a text file with combined read content"
 ]
 
 def main():

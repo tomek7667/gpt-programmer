@@ -17,7 +17,7 @@ class BaseApi:
 		print(f"Initialized API with ID: {self.id}")
 		self.history.append({
 			"role": "system",
-			"content": f"Here is the context you must follow. Under no circumstances should you deviate from this context. {{CONTEXT}}{context}{{/CONTEXT}}"
+			"content": f"Here is the context you must follow. Under no circumstances should you deviate from this context. This is the context you must obey blindly:\n\n{context}"
 		})
 
 	def generate_image(self, text: str) -> str:
