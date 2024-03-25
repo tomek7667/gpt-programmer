@@ -3,7 +3,6 @@ import { OpenAI } from "openai";
 import { mkdirSync, writeFileSync } from "fs";
 import { z } from "zod";
 import path from "path";
-import { SUFFIX_WARNING } from "./ActionExamples";
 
 export interface BaseActionData {
 	type: string;
@@ -107,7 +106,6 @@ export class BaseAction {
 		role: Role = "user",
 		depth: number = 0
 	): Promise<void> {
-		task = task + SUFFIX_WARNING;
 		if (role !== "system" || task !== this.lastMessage.content) {
 			this.addMessage({
 				role,
@@ -141,12 +139,18 @@ export class BaseAction {
 			);
 		}
 		if (output !== "SUCCESS") {
-			await this.perform(output, "user", depth + 1);
+			if (this.verbose) {
+				console.log(output);
+			}
+			// pop the last message - TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
+			this.history.pop();
+			await this.perform(output, "system", depth + 1);
 		}
 	}
 
 	public async determineCommand(content: string): Promise<string> {
 		try {
+			content = this.dewrapText(content);
 			if (content.trim().length === 0) {
 				this.history.pop();
 				// return "You have provided an empty response. Please follow the format instructed at the beginning of the conversation.";
@@ -164,7 +168,7 @@ export class BaseAction {
 				});
 				this.saveSelf("error");
 			}
-			return `ERROR DURING THE COMMAND: '${error}'`;
+			return `INCORRECT FORMAT USE DETECTED: '${error}'`;
 		}
 	}
 
@@ -179,5 +183,13 @@ export class BaseAction {
 
 	public get lastMessage() {
 		return this.history[this.history.length - 1];
+	}
+
+	private dewrapText(text: string): string {
+		const match = text.match(/\{DATA\}(.+)\{\/DATA\}/s);
+		if (match) {
+			return match[1].trim();
+		}
+		return text;
 	}
 }

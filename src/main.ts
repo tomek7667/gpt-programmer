@@ -41,7 +41,4 @@ app.post("/actions", async (req, res) => {
 
 app.listen(port, hostname, async () => {
 	console.log(`Server is running on http://${hostname}:${port}`);
-	await api.WriteFile.perform(
-		"Make a python program that will print out 90 fibonacci numbers."
-	);
 });

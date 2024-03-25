@@ -1,55 +1,50 @@
 import { Role } from "./BaseAction";
 
-export const SUFFIX_WARNING =
-	" Do not add any comments to your response. Anything beside JSON will be error.";
-
 export type ActionMessages = {
 	[key: string]: { role: Role; content: string }[];
+};
+
+const formatWrap = (object: object): string => {
+	return `{DATA}\n${JSON.stringify(object)}\n{/DATA}`;
 };
 
 export const ActionExamples: ActionMessages = {
 	DeleteFile: [
 		{
 			role: "user",
-			content: "Remove the file at abc/greeting.txt" + SUFFIX_WARNING,
+			content: "Remove the file at abc/greeting.txt",
 		},
 		{
 			role: "assistant",
-			content: JSON.stringify({ path: "./abc/greeting.txt" }),
+			content: formatWrap({ path: "./abc/greeting.txt" }),
 		},
 		{
 			role: "user",
-			content:
-				"Remove directory examples from the src directory" +
-				SUFFIX_WARNING,
+			content: "Remove directory examples from the src directory",
 		},
 		{
 			role: "assistant",
-			content: JSON.stringify({ path: "./src/examples" }),
+			content: formatWrap({ path: "./src/examples" }),
 		},
 	],
 	WriteFile: [
 		{
 			role: "user",
 			content:
-				"Create a hello world text file. You can call the file abc.txt" +
-				SUFFIX_WARNING,
+				"Create a hello world text file. You can call the file abc.txt",
 		},
 		{
 			role: "assistant",
-			content: JSON.stringify([
-				{ path: "abc.txt", content: "Hello World!" },
-			]),
+			content: formatWrap([{ path: "abc.txt", content: "Hello World!" }]),
 		},
 		{
 			role: "user",
 			content:
-				"Make 3 files each starting with a different alphabet letter. Extension can be txt. Inside input different letters" +
-				SUFFIX_WARNING,
+				"Make 3 files each starting with a different alphabet letter. Extension can be txt. Inside input different letters",
 		},
 		{
 			role: "assistant",
-			content: JSON.stringify([
+			content: formatWrap([
 				{
 					path: "./a.txt",
 					content: "b",
