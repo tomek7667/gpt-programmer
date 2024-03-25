@@ -4,7 +4,7 @@ import { mkdirSync, writeFileSync } from "fs";
 import { z } from "zod";
 import path from "path";
 
-export interface BaseActionData {
+export interface BaseActionData<K> {
 	type: string;
 	context: string;
 	maxDepth: number;
@@ -12,7 +12,7 @@ export interface BaseActionData {
 	verbose: boolean;
 	client: OpenAI;
 	schema: z.ZodType<any>;
-	action: (content: any) => Promise<string>;
+	action: (content: any) => Promise<{ message: string; data?: K }>;
 	examples: { role: Role; content: string }[];
 }
 
@@ -24,7 +24,7 @@ export interface Message {
 	content: string;
 }
 
-export class BaseAction {
+export class BaseAction<K = void> {
 	public id: string;
 	public context: string;
 	public maxDepth: number;
@@ -34,10 +34,13 @@ export class BaseAction {
 	public history: Message[] = [];
 	public contextId: string;
 	public schema: z.ZodType<any>;
-	public action: (content: any) => Promise<string>;
+	public action: (content: any) => Promise<{ message: string; data?: K }>;
 
-	constructor(data: BaseActionData) {
-		this.id = `${data.type}-${Math.random().toString(36).substring(2, 9)}`;
+	constructor(data: BaseActionData<K>) {
+		this.id = `${data.type}-${Math.random()
+			.toString(36)
+			.substring(2, 9)
+			.toUpperCase()}`;
 		this.context = data.context;
 		this.maxDepth = data.maxDepth;
 		this.model = data.model;
@@ -105,7 +108,7 @@ export class BaseAction {
 		task: string,
 		role: Role = "user",
 		depth: number = 0
-	): Promise<void> {
+	): Promise<K | void> {
 		if (role !== "system" || task !== this.lastMessage.content) {
 			this.addMessage({
 				role,
@@ -138,28 +141,33 @@ export class BaseAction {
 				`MAXIMUM_DEPTH_EXCEEDED: ${this.id}, Too many recursive calls, maximum recursion depth set is ${this.maxDepth}`
 			);
 		}
-		if (output !== "SUCCESS") {
+		if (output.message !== "SUCCESS") {
 			if (this.verbose) {
 				console.log(output);
 			}
 			// pop the last message
 			// TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
 			this.history.pop();
-			await this.perform(output, "system", depth + 1);
+			return await this.perform(output.message, "system", depth + 1);
 		}
+		return output.data;
 	}
 
-	public async determineCommand(content: string): Promise<string> {
+	public async determineCommand(
+		content: string
+	): Promise<{ data?: K; message: string }> {
 		try {
 			content = this.dewrapText(content);
 			if (content.trim().length === 0) {
 				this.history.pop();
 				// return "You have provided an empty response. Please follow the format instructed at the beginning of the conversation.";
-				return `Empty response is not a correct response. Reply according with your context: '${this.context}'`;
+				return {
+					message: `Empty response is not a correct response. Reply according with your context: '${this.context}'`,
+				};
 			}
 			const json = JSON.parse(content);
-			const data = this.schema.parse(json);
-			return await this.action(data);
+			const model = this.schema.parse(json);
+			return await this.action(model);
 		} catch (err: any) {
 			const error = err?.message ?? err?.toString() ?? "Unknown error";
 			if (this.verbose) {
@@ -169,7 +177,9 @@ export class BaseAction {
 				});
 				this.saveSelf("error");
 			}
-			return `INCORRECT FORMAT USE DETECTED: '${error}'`;
+			return {
+				message: `Incorrect format detected. Please follow the format instructed at the beginning of the conversation. Error: ${error}`,
+			};
 		}
 	}
 

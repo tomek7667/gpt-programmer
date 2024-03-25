@@ -60,4 +60,23 @@ export const ActionExamples: ActionMessages = {
 			]),
 		},
 	],
+	ListDirs: [
+		{
+			role: "user",
+			content: "List all files in the src directory",
+		},
+		{
+			role: "assistant",
+			content: formatWrap(["./src/"]),
+		},
+		{
+			role: "user",
+			content:
+				"List all files in the sandbox, current and home directories",
+		},
+		{
+			role: "assistant",
+			content: formatWrap(["./sandbox/", ".", "~/"]),
+		},
+	],
 };

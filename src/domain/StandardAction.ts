@@ -12,11 +12,11 @@ const maxDepth = 15;
 const model = "deepseek-ai_deepseek-coder-6.7b-instruct";
 const verbose = false;
 
-interface StandardActionData {
+interface StandardActionData<K> {
 	type: string;
 	schema: z.ZodType<any>;
 	contextPath: string;
-	action: (content: any) => Promise<string>;
+	action: (content: any) => Promise<{ message: string; data?: K }>;
 	examples: { role: Role; content: string }[];
 }
 
@@ -24,8 +24,8 @@ const readContext = (filename: string) => {
 	return readFileSync(path.join(__dirname, filename), "utf-8");
 };
 
-export class StandardAction extends BaseAction {
-	constructor(data: StandardActionData) {
+export class StandardAction<K = void> extends BaseAction<K> {
+	constructor(data: StandardActionData<K>) {
 		super({
 			client,
 			maxDepth,
