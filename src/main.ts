@@ -41,4 +41,8 @@ app.post("/actions", async (req, res) => {
 
 app.listen(port, hostname, async () => {
 	console.log(`Server is running on http://${hostname}:${port}`);
+	// await api.WriteFile.perform(
+	// 	"Create a ruby program that will print out fibonacci numbers up to 10. (or given N)"
+	// );
+	// await api.WriteFile.perform("Write 10 files containing random words");
 });
