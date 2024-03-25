@@ -142,7 +142,8 @@ export class BaseAction {
 			if (this.verbose) {
 				console.log(output);
 			}
-			// pop the last message - TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
+			// pop the last message
+			// TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
 			this.history.pop();
 			await this.perform(output, "system", depth + 1);
 		}
