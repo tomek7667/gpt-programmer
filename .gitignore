@@ -1,2 +1,5 @@
 g4f-api/__pycache__
 node_modules/
+debug/
+error/
+dist/
