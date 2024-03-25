@@ -10,5 +10,8 @@
 	},
 	"scripts": {
 		"start:api": "python g4f-api/main.py"
+	},
+	"devDependencies": {
+		"typescript": "^5.4.3"
 	}
 }
