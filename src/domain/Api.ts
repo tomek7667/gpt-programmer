@@ -4,9 +4,10 @@ import {
 	DeleteFile,
 	ListDirs,
 	ReadFiles,
-	RunCommand,
+	GetLinks,
 	WriteFile,
 	WriteTaskList,
+	RunCommand,
 } from "./actions";
 
 const now = new Date();
@@ -48,6 +49,10 @@ export class Api {
 
 	public get RunCommand() {
 		return RunCommand(this.projectRoot);
+	}
+
+	public get GetLinks() {
+		return GetLinks();
 	}
 }
 

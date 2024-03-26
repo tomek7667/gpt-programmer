@@ -49,6 +49,13 @@ app.post("/actions", async (req, res) => {
 				data: await api.RunCommand.perform(data.message),
 			});
 		}
+		case Actions.GetLinks: {
+			return res.status(200).json({
+				success: true,
+				message: "Success",
+				data: await api.GetLinks.perform(data.message),
+			});
+		}
 		default: {
 			return res.status(400).json({
 				success: false,
@@ -145,4 +152,6 @@ app.listen(config.port, config.hostname, async () => {
 	// console.log({ result });
 	// Success result test: sandbox/11-17-37
 	// // { result: { stdout: 'Hello World!\r\n', stderr: '', error: '' } }
+	// Test 8.
+	// const result = await api.GetLinks.perform("ai blogs");
 });
