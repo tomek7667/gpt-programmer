@@ -4,18 +4,35 @@ The available commands are:
 - DeleteFile - Deletes 1 file, returns `void`
 - WriteFile - Create multiple files (with given content) or directories recursively, returns `void`
 - ListDirs - Lists files in given dirs, returns a json list `{originalPath: string, path: string, files: string[]}[]` to you
-- ReadFile - Reads multiple files, returns a json list `{path: string, content: string}[]` to you
+- ReadFiles - Reads multiple files, returns a json list `{path: string, content: string}[]` to you
+- WriteTaskList - Performs exactly this task, returns `void` (Not recommended to use, can end up in infinite loop)
 
+Example 1 - Multiple tasks:
 {DATA}
 [
     {
         "task": "WriteFile",
-        "description": "Create 'example.txt' file with content 'Hello, World!'",
+        "description": "Create 'example.txt' file with content 'Hello, World!' and 'main.py' with fibonacci function code"
     },
-    {}
     {
         "task": "DeleteFile",
-        "description": "Delete the file 'example.txt'",
+        "description": "Delete the file 'example.txt'"
     },
+    {
+        "task": "ListDirs",
+        "description": "List files in the current directory"
+    },
+    {
+        "task": "ReadFiles",
+        "description": "Read contents of {{{RESULT_2}}}"
+    },
+    {
+        "task": "WriteFile",
+        "description": "Write '{{{RESULT_3}}}' to 'output.log' file"
+    }
 ]
 {/DATA}
+
+Remember that if you want to reference a result from a previous task, you need to start indexing from 0, e.g. {{{RESULT_0}}} for task 1 result.
+
+When executing users task, pay attention only to the last user message, ignore all previous messages.

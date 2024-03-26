@@ -4,17 +4,21 @@ import {
 	mkdirSync,
 	readdirSync,
 	readFileSync,
+	rmdirSync,
+	rmSync,
 	unlinkSync,
 	writeFileSync,
 } from "fs";
 import { ActionExamples } from "./ActionExamples";
 import path from "path";
+import { host } from "../config";
 
 export enum A {
 	DeleteFile = "DeleteFile",
 	WriteFile = "WriteFile",
 	ListDirs = "ListDirs",
 	ReadFiles = "ReadFiles",
+	WriteTaskList = "WriteTaskList",
 }
 
 export const AcceptedActions = [
@@ -22,20 +26,33 @@ export const AcceptedActions = [
 	A.WriteFile,
 	A.ListDirs,
 	A.ReadFiles,
+	A.WriteTaskList,
 ];
+
+const action = z.enum([
+	A.DeleteFile,
+	A.WriteFile,
+	A.ListDirs,
+	A.ReadFiles,
+	A.WriteTaskList,
+]);
 
 export const Actions = {
 	Create: z.object({
-		action: z.enum([A.DeleteFile, A.WriteFile, A.ListDirs, A.ReadFiles]),
+		action,
 		message: z.string(),
 	}),
 	Schemas: {
-		DeleteFile: z.object({
-			path: z.string(),
-		}),
+		DeleteFile: z.array(z.string()),
 		WriteFile: z.array(z.object({ path: z.string(), content: z.string() })),
 		ListDirs: z.array(z.string()),
 		ReadFiles: z.array(z.string()),
+		WriteTaskList: z.array(
+			z.object({
+				task: action,
+				description: z.string(),
+			})
+		),
 	},
 };
 
@@ -65,7 +82,12 @@ class Api {
 				content: z.infer<typeof Actions.Schemas.DeleteFile>
 			) => {
 				try {
-					unlinkSync(path.resolve(this.projectRoot, content.path));
+					content.forEach((p) => {
+						rmSync(path.resolve(this.projectRoot, p), {
+							recursive: true,
+							force: true,
+						});
+					});
 					return {
 						message: "SUCCESS",
 					};
@@ -189,6 +211,53 @@ class Api {
 					};
 				} catch (err: any) {
 					console.log(err);
+					throw new Error(err);
+				}
+			},
+		});
+	}
+
+	public get WriteTaskList() {
+		return new StandardAction({
+			type: A.WriteTaskList,
+			schema: Actions.Schemas.WriteTaskList,
+			contextPath: "actions/WriteTaskList",
+			examples: ActionExamples.WriteTaskList,
+			action: async (
+				content: z.infer<typeof Actions.Schemas.WriteTaskList>
+			) => {
+				try {
+					const results: string[] = [];
+					// Unfortunately, a traditional for loop is required here to perform the tasks synchronously
+					for (let i = 0; i < content.length; i++) {
+						const { task, description } = content[i];
+						let message = description;
+						results.forEach((result, index) => {
+							message = message.replaceAll(
+								`{{{RESULT_${index}}}}`,
+								result
+							);
+						});
+
+						const response = await fetch(`${host}/actions`, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								action: task,
+								message,
+							}),
+						});
+						const result: any = await response.json();
+						// TODO: Request to a tester to verify whether the result is according to the description of the task.
+						results.push(result["data"] ?? "");
+					}
+					return {
+						message: "SUCCESS",
+					};
+				} catch (err: any) {
+					console.error(err);
 					throw new Error(err);
 				}
 			},

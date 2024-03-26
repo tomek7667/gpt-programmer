@@ -2,9 +2,8 @@ import { z } from "zod";
 import bodyParser from "body-parser";
 import express from "express";
 import { A, AcceptedActions, Actions, api } from "./domain/Api";
+import { host, hostname, port } from "./config";
 
-const hostname = "localhost";
-const port = 3000;
 const app = express();
 
 app.use(bodyParser.json());
@@ -39,6 +38,10 @@ app.post("/actions", async (req, res) => {
 				data: await api.ReadFiles.perform(data.message),
 			});
 		}
+		case A.WriteTaskList: {
+			await api.WriteTaskList.perform(data.message);
+			break;
+		}
 		default: {
 			return res.status(400).json({
 				success: false,
@@ -54,7 +57,7 @@ app.post("/actions", async (req, res) => {
 });
 
 app.listen(port, hostname, async () => {
-	console.log(`Server is running on http://${hostname}:${port}`);
+	console.log(`Server is running on ${host}`);
 	// Test 1.
 	// await api.WriteFile.perform(
 	// 	"Create a ruby program that will print out fibonacci numbers up to 10. (or given N)"
@@ -121,4 +124,10 @@ app.listen(port, hostname, async () => {
 	// 		}
 	// 	]*/
 	// }
+	// Test 6.
+	// Comment: I specifically said it should be a helloworld.py file, but the first task created a main.py file, so next tasks failed. That's why a tester is needed that will tell whether the action needs to be done again or not. Each step preferably. Faulty run: ./sandbox/02-15-27
+	// await api.WriteTaskList.perform(
+	// 	"Create helloworld.py python file with print of hello world, read it and then save it as second.py"
+	// );
+	// Success result test: sandbox/02-19-10
 });

@@ -3,14 +3,7 @@ import { z } from "zod";
 import { BaseAction as BaseAction, Role } from "./BaseAction";
 import { readFileSync } from "fs";
 import path from "path";
-
-const client = new OpenAI({
-	baseURL: "http://localhost:1234/v1",
-	apiKey: "lm-studio",
-});
-const maxDepth = 15;
-const model = "deepseek-ai_deepseek-coder-6.7b-instruct";
-const verbose = false;
+import { client, maxDepth, model, verbose } from "../config";
 
 interface StandardActionData<K> {
 	type: string;

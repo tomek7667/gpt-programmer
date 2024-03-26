@@ -171,7 +171,7 @@ export class BaseAction<K = void> {
 		} catch (err: any) {
 			const error = err?.message ?? err?.toString() ?? "Unknown error";
 			if (this.verbose) {
-				console.log("ERROR DURING THE COMMAND: ", {
+				console.log(`ERROR DURING THE COMMAND (${this.id}): `, {
 					content,
 					error,
 				});

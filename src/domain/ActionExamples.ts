@@ -97,4 +97,48 @@ export const ActionExamples: ActionMessages = {
 			content: formatWrap(["./a.txt", "./src/b.js"]),
 		},
 	],
+	WriteTaskList: [
+		{
+			role: "user",
+			content: "Create helloworld.txt file with 'abcdef' as content",
+		},
+		{
+			role: "assistant",
+			content: formatWrap([
+				{
+					task: "WriteFile",
+					description:
+						"Create a 'helloworld.txt' with 'abcdef' as content",
+				},
+			]),
+		},
+		{
+			role: "user",
+			content:
+				"Create helloworld.txt file, read its contents, save the result to 2.txt file and then remove the original, 'helloworld.txt' file. The original file should contain 'abcdef' inside it (before it's deleted of course)",
+		},
+		{
+			role: "assistant",
+			content: formatWrap([
+				{
+					task: "WriteFile",
+					description:
+						"Create a 'helloworld.txt' with 'abcdef' as content",
+				},
+				{
+					task: "ReadFiles",
+					description:
+						"Read the contents of the ./helloworld.txt file",
+				},
+				{
+					task: "WriteFile",
+					description: "Write {{{RESULT_1}}} to the ./2.txt file",
+				},
+				{
+					task: "DeleteFile",
+					description: "Remove the ./helloworld.txt file",
+				},
+			]),
+		},
+	],
 };

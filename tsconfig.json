@@ -7,9 +7,9 @@
 		"sourceMap": true,
 		"outDir": "dist",
 		"rootDir": "src",
-		"lib": ["es6"],
+		"lib": ["es6", "ES2023"],
 		"strict": true
 	},
-	"lib": ["es6", "node"],
+	"lib": ["es6", "node", "ES2023"],
 	"include": ["src/**/*.ts"]
 }
