@@ -1,7 +1,7 @@
 <h1 align="center">GPT Programmer</h2>
 
 <p align="center">
-   <img src=".assets/ai.jfif" alt="Devika Logo" width="350">
+   <img src=".assets/ai.jfif" alt="GPT Programmer Logo" width="350">
 </p>
 
 <h2 align="center">Use a model of your choice, and give it superpowers with <i>GPT Programmer</i>. It allows the LLM to interact with:</h1>
@@ -32,7 +32,7 @@
 - [x] Refactor `Api.ts` so that the [development section](#Development) is easier to extend, and each action is in a separate file.
 - [x] Add a way to run commands on the host system.
 - [x] Add a way to list google search results.
-- [ ] Add a way to visit websites *(beautifully souped most probably)* and return the content.
+- [x] Add a way to visit websites *(beautifully souped most probably)* and return the content.
 - [ ] Add `GetTree` action that will return a tree of the filesystem at the given path.
 - [ ] Make the `WriteTaskList` action ability to edit an already established project.
 - [ ] Add a Tester action that will verify that the previous action from the `TaskList` was successful or not. If it's not successful, it will try to run the action again.
