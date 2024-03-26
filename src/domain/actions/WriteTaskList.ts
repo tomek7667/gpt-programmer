@@ -1,4 +1,4 @@
-import { A, Actions, Example, formatWrap } from ".";
+import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import { z } from "zod";
 import { config } from "../../config";
@@ -49,12 +49,12 @@ const examples: Example[] = [
 
 export const WriteTaskList = (projectRoot: string) => {
 	return new StandardAction({
-		type: A.WriteTaskList,
-		schema: Actions.Schemas.WriteTaskList,
+		type: Actions.WriteTaskList,
+		schema: Action.Schemas.WriteTaskList,
 		contextPath: "contexts/WriteTaskList",
 		examples,
 		action: async (
-			content: z.infer<typeof Actions.Schemas.WriteTaskList>
+			content: z.infer<typeof Action.Schemas.WriteTaskList>
 		) => {
 			try {
 				const results: string[] = [];

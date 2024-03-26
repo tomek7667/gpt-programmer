@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Role } from "../BaseAction";
 
-export enum A {
+export enum Actions {
 	DeleteFile = "DeleteFile",
 	WriteFile = "WriteFile",
 	ListDirs = "ListDirs",
@@ -10,11 +10,11 @@ export enum A {
 }
 
 export const AcceptedActions = [
-	A.DeleteFile,
-	A.WriteFile,
-	A.ListDirs,
-	A.ReadFiles,
-	A.WriteTaskList,
+	Actions.DeleteFile,
+	Actions.WriteFile,
+	Actions.ListDirs,
+	Actions.ReadFiles,
+	Actions.WriteTaskList,
 ];
 
 export const formatWrap = (object: object): string => {
@@ -27,14 +27,14 @@ export interface Example {
 }
 
 const action = z.enum([
-	A.DeleteFile,
-	A.WriteFile,
-	A.ListDirs,
-	A.ReadFiles,
-	A.WriteTaskList,
+	Actions.DeleteFile,
+	Actions.WriteFile,
+	Actions.ListDirs,
+	Actions.ReadFiles,
+	Actions.WriteTaskList,
 ]);
 
-export const Actions = {
+export const Action = {
 	Create: z.object({
 		action,
 		message: z.string(),

@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync } from "fs";
-import { A, Actions, Example, formatWrap } from ".";
+import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import path from "path";
 import { z } from "zod";
@@ -40,11 +40,11 @@ const examples: Example[] = [
 
 export const WriteFile = (projectRoot: string) => {
 	return new StandardAction({
-		type: A.WriteFile,
-		schema: Actions.Schemas.WriteFile,
+		type: Actions.WriteFile,
+		schema: Action.Schemas.WriteFile,
 		contextPath: "contexts/WriteFile",
 		examples,
-		action: async (content: z.infer<typeof Actions.Schemas.WriteFile>) => {
+		action: async (content: z.infer<typeof Action.Schemas.WriteFile>) => {
 			try {
 				content.map(({ content, path: p }) => {
 					if (p[p.length - 1] === "/") {

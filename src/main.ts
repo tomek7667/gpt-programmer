@@ -1,7 +1,7 @@
 import { z } from "zod";
 import bodyParser from "body-parser";
 import express from "express";
-import { api, Actions, A, AcceptedActions } from "./domain";
+import { api, Action, Actions, AcceptedActions } from "./domain";
 import { config } from ".";
 
 const app = express();
@@ -9,36 +9,36 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post("/actions", async (req, res) => {
-	const parsed = Actions.Create.safeParse(req.body);
+	const parsed = Action.Create.safeParse(req.body);
 	if (!parsed.success) {
 		res.status(400).json(parsed);
 		return;
 	}
-	const data: z.infer<typeof Actions.Create> = parsed.data;
+	const data: z.infer<typeof Action.Create> = parsed.data;
 	switch (data.action) {
-		case A.DeleteFile: {
+		case Actions.DeleteFile: {
 			await api.DeleteFile.perform(data.message);
 			break;
 		}
-		case A.WriteFile: {
+		case Actions.WriteFile: {
 			await api.WriteFile.perform(data.message);
 			break;
 		}
-		case A.ListDirs: {
+		case Actions.ListDirs: {
 			return res.status(200).json({
 				success: true,
 				message: "Success",
 				data: await api.ListDirs.perform(data.message),
 			});
 		}
-		case A.ReadFiles: {
+		case Actions.ReadFiles: {
 			return res.status(200).json({
 				success: true,
 				message: "Success",
 				data: await api.ReadFiles.perform(data.message),
 			});
 		}
-		case A.WriteTaskList: {
+		case Actions.WriteTaskList: {
 			await api.WriteTaskList.perform(data.message);
 			break;
 		}

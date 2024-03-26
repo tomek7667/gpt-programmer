@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { A, Actions, Example, formatWrap } from ".";
+import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import path from "path";
 import { z } from "zod";
@@ -30,11 +30,11 @@ const examples: Example[] = [
 
 export const ReadFiles = (projectRoot: string) => {
 	return new StandardAction<File[]>({
-		type: A.ReadFiles,
-		schema: Actions.Schemas.ReadFiles,
+		type: Actions.ReadFiles,
+		schema: Action.Schemas.ReadFiles,
 		contextPath: "contexts/ReadFiles",
 		examples,
-		action: async (paths: z.infer<typeof Actions.Schemas.ReadFiles>) => {
+		action: async (paths: z.infer<typeof Action.Schemas.ReadFiles>) => {
 			try {
 				const data: File[] = paths.map((p) => {
 					return {

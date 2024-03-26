@@ -1,5 +1,5 @@
 import { rmSync } from "fs";
-import { A, Actions, Example, formatWrap } from ".";
+import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import path from "path";
 import { z } from "zod";
@@ -25,11 +25,11 @@ const examples: Example[] = [
 
 export const DeleteFile = (projectRoot: string) => {
 	return new StandardAction({
-		type: A.DeleteFile,
-		schema: Actions.Schemas.DeleteFile,
+		type: Actions.DeleteFile,
+		schema: Action.Schemas.DeleteFile,
 		contextPath: "contexts/DeleteFile",
 		examples,
-		action: async (content: z.infer<typeof Actions.Schemas.DeleteFile>) => {
+		action: async (content: z.infer<typeof Action.Schemas.DeleteFile>) => {
 			try {
 				content.forEach((p) => {
 					rmSync(path.resolve(projectRoot, p), {

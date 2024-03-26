@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { A, Actions, Example, formatWrap } from ".";
+import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import path from "path";
 import { z } from "zod";
@@ -31,11 +31,11 @@ const examples: Example[] = [
 
 export const ListDirs = (projectRoot: string) => {
 	return new StandardAction<Dir[]>({
-		type: A.ListDirs,
-		schema: Actions.Schemas.ListDirs,
+		type: Actions.ListDirs,
+		schema: Action.Schemas.ListDirs,
 		contextPath: "contexts/ListDirs",
 		examples,
-		action: async (paths: z.infer<typeof Actions.Schemas.ListDirs>) => {
+		action: async (paths: z.infer<typeof Action.Schemas.ListDirs>) => {
 			try {
 				const data: Dir[] = paths.map((p) => {
 					return {
