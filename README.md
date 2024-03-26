@@ -4,21 +4,21 @@
    <img src=".assets/ai.jfif" alt="Devika Logo" width="350">
 </p>
 
-<h2 align="center">Use a model of your choice, and give it superpowers with *GPT Programmer*. It allows the LLM to interact with:</h1>
+<h2 align="center">Use a model of your choice, and give it superpowers with <i>GPT Programmer</i>. It allows the LLM to interact with:</h1>
 
 <div align="center">
-   <li>running commands on the host system</li>
-   <li>the host file system</li>
-   <li>the internet</li>
-   <li>*any custom action, that you can implement in TypeScript.*</li>
+   <li><b>running commands</b> on the host system</li>
+   <li>the host <b>file system</b></li>
+   <li>the <b>internet</b></li>
+   <li><i><b>any</b> custom action, that you can implement in TypeScript.</i></li>
 </div>
 
 ## Setup
 
 1. use node version 21.7.1 (with `npm i -g yarn`)
 2. Either:
-   1. (Free) Open [LM Studio](https://lmstudio.ai/), go to search and find a model you would like to use and then go to `Local Server`, load the model and `Start Server`.
-   2. (Rich people) Configure `src/config.ts` to use OpenAI API
+   1. <i>(Free)</i> Open [LM Studio](https://lmstudio.ai/), go to search and find a model you would like to use and then go to `Local Server`, load the model and `Start Server`.
+   2. <i>(Rich people)</i> Configure `src/config.ts` to use OpenAI API
 3. Run `yarn` to install the dependencies
 
 ## Running
