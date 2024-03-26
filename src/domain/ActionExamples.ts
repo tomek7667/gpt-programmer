@@ -79,4 +79,22 @@ export const ActionExamples: ActionMessages = {
 			content: formatWrap(["./sandbox/", ".", "~/"]),
 		},
 	],
+	ReadFiles: [
+		{
+			role: "user",
+			content: "Read the contents of abc.txt",
+		},
+		{
+			role: "assistant",
+			content: formatWrap(["./abc.txt"]),
+		},
+		{
+			role: "user",
+			content: "read a.txt and src/b.js.",
+		},
+		{
+			role: "assistant",
+			content: formatWrap(["./a.txt", "./src/b.js"]),
+		},
+	],
 };

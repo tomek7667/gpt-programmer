@@ -31,7 +31,13 @@ app.post("/actions", async (req, res) => {
 				message: "Success",
 				data: await api.ListDirs.perform(data.message),
 			});
-			break;
+		}
+		case A.ReadFiles: {
+			return res.status(200).json({
+				success: true,
+				message: "Success",
+				data: await api.ReadFiles.perform(data.message),
+			});
 		}
 		default: {
 			return res.status(400).json({
@@ -78,4 +84,41 @@ app.listen(port, hostname, async () => {
 	// 		files: ["abc", "essa"],
 	// 	},
 	// ];
+	// Test 5.
+	// await api.WriteFile.perform(
+	// 	"Create 3 files: a.txt, f.txt. Both having '12345-abcdef' inside"
+	// );
+	// const files = await api.ListDirs.perform("list all files in current dir");
+	// console.log(files);
+	// /*[
+	// 	{
+	// 		originalPath: '.',
+	// 		path: 'C:\\Users\\tomek\\cyberman\\gpt-programmer\\sandbox\\00-59-53',
+	// 		files: [ 'a.txt', 'f.txt' ]
+	// 	}
+	// ]*/
+	// if (!files) {
+	// 	console.log("No files present");
+	// } else {
+	// 	let prompt = `Read files: `;
+	// 	files.forEach((d) => {
+	// 		d.files.forEach((f) => {
+	// 			prompt += `${d.originalPath}/${f}, `;
+	// 		});
+	// 	});
+	// 	console.log(prompt);
+	// 	// Read files: ./a.txt, ./f.txt,
+	// 	const contents = await api.ReadFiles.perform(prompt);
+	// 	console.log(contents);
+	// 	/*[
+	// 		{
+	// 			path: 'C:\\Users\\tomek\\cyberman\\gpt-programmer\\sandbox\\00-59-53\\a.txt',
+	// 			content: '12345-abcdef'
+	// 		},
+	// 		{
+	// 			path: 'C:\\Users\\tomek\\cyberman\\gpt-programmer\\sandbox\\00-59-53\\f.txt',
+	// 			content: '12345-abcdef'
+	// 		}
+	// 	]*/
+	// }
 });

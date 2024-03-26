@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { StandardAction } from "./StandardAction";
-import { mkdirSync, readdirSync, unlinkSync, writeFileSync } from "fs";
+import {
+	mkdirSync,
+	readdirSync,
+	readFileSync,
+	unlinkSync,
+	writeFileSync,
+} from "fs";
 import { ActionExamples } from "./ActionExamples";
 import path from "path";
 
@@ -8,13 +14,19 @@ export enum A {
 	DeleteFile = "DeleteFile",
 	WriteFile = "WriteFile",
 	ListDirs = "ListDirs",
+	ReadFiles = "ReadFiles",
 }
 
-export let AcceptedActions = [A.DeleteFile, A.WriteFile, A.ListDirs];
+export const AcceptedActions = [
+	A.DeleteFile,
+	A.WriteFile,
+	A.ListDirs,
+	A.ReadFiles,
+];
 
 export const Actions = {
 	Create: z.object({
-		action: z.enum([A.DeleteFile, A.WriteFile, A.ListDirs]),
+		action: z.enum([A.DeleteFile, A.WriteFile, A.ListDirs, A.ReadFiles]),
 		message: z.string(),
 	}),
 	Schemas: {
@@ -23,6 +35,7 @@ export const Actions = {
 		}),
 		WriteFile: z.array(z.object({ path: z.string(), content: z.string() })),
 		ListDirs: z.array(z.string()),
+		ReadFiles: z.array(z.string()),
 	},
 };
 
@@ -123,12 +136,49 @@ class Api {
 			examples: ActionExamples.ListDirs,
 			action: async (paths: z.infer<typeof Actions.Schemas.ListDirs>) => {
 				try {
-					const data = paths.map((p) => {
+					const data: Dir[] = paths.map((p) => {
 						return {
 							originalPath: p,
 							path: path.resolve(this.projectRoot, p),
 							files: readdirSync(
 								path.resolve(this.projectRoot, p)
+							),
+						};
+					});
+
+					return {
+						data,
+						message: "SUCCESS",
+					};
+				} catch (err: any) {
+					console.log(err);
+					throw new Error(err);
+				}
+			},
+		});
+	}
+
+	public get ReadFiles() {
+		interface File {
+			path: string;
+			content: string;
+		}
+
+		return new StandardAction<File[]>({
+			type: A.ReadFiles,
+			schema: Actions.Schemas.ReadFiles,
+			contextPath: "actions/ReadFiles",
+			examples: ActionExamples.ReadFiles,
+			action: async (
+				paths: z.infer<typeof Actions.Schemas.ReadFiles>
+			) => {
+				try {
+					const data: File[] = paths.map((p) => {
+						return {
+							path: path.resolve(this.projectRoot, p),
+							content: readFileSync(
+								path.resolve(this.projectRoot, p),
+								"utf-8"
 							),
 						};
 					});

@@ -8,7 +8,7 @@ Example 1 - Multiple directories:
 
 Example 2 - Single directory:
 {DATA}
-["./src"]
+["./dir/"]
 {/DATA}
 
 If not specified otherwise, search the directories starting from current directory and not the root directory.
