@@ -8,7 +8,10 @@ import {
 	WriteFile,
 	WriteTaskList,
 	RunCommand,
+	VisitLink,
 } from "./actions";
+import { Summarizer } from "./Summarizer";
+import { config } from "../config";
 
 const now = new Date();
 
@@ -53,6 +56,17 @@ export class Api {
 
 	public get GetLinks() {
 		return GetLinks();
+	}
+
+	public get VisitLink() {
+		return VisitLink();
+	}
+
+	public get summarizer() {
+		return new Summarizer({
+			client: config.client,
+			model: config.model,
+		});
 	}
 }
 

@@ -36,3 +36,5 @@ Example 2 - Single file:
 Do not write 2 same files, as the last one will overwrite the first one.
 
 In order to create a directory you must end the path with a '/' character.
+
+If you would like to make endlines in the content, use the '\n' character, not the real endlines.

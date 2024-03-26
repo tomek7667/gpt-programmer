@@ -9,6 +9,7 @@ export enum Actions {
 	WriteTaskList = "WriteTaskList",
 	RunCommand = "RunCommand",
 	GetLinks = "GetLinks",
+	VisitLink = "VisitLink",
 }
 
 export const AcceptedActions = [
@@ -19,6 +20,7 @@ export const AcceptedActions = [
 	Actions.WriteTaskList,
 	Actions.RunCommand,
 	Actions.GetLinks,
+	Actions.VisitLink,
 ];
 
 export const formatWrap = (object: object): string => {
@@ -38,6 +40,7 @@ const action = z.enum([
 	Actions.WriteTaskList,
 	Actions.RunCommand,
 	Actions.GetLinks,
+	Actions.VisitLink,
 ]);
 
 export const Action = {
@@ -63,6 +66,9 @@ export const Action = {
 		GetLinks: z.object({
 			query: z.string(),
 		}),
+		VisitLink: z.object({
+			link: z.string(),
+		}),
 	},
 };
 
@@ -73,3 +79,4 @@ export * from "./ReadFiles";
 export * from "./WriteTaskList";
 export * from "./RunCommand";
 export * from "./GetLinks";
+export * from "./VisitLink";

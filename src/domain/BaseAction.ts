@@ -51,13 +51,13 @@ export class BaseAction<K = void> {
 		this.action = data.action;
 
 		this.contextId = randomUUID();
-		this.addMessage({
+		this.pushMessage({
 			id: this.contextId,
 			role: "system",
 			content: `Your id is '${this.id}'.\n${this.context}`,
 		});
 		data.examples.forEach(({ content, role }) =>
-			this.addMessage({
+			this.pushMessage({
 				content,
 				role,
 			})
@@ -88,7 +88,7 @@ export class BaseAction<K = void> {
 		);
 	}
 
-	public addMessage({
+	public pushMessage({
 		id,
 		role,
 		content,
@@ -104,15 +104,39 @@ export class BaseAction<K = void> {
 		});
 	}
 
+	public unshiftMessage({
+		id,
+		role,
+		content,
+	}: {
+		id?: string;
+		role: Role;
+		content: string;
+	}) {
+		this.history.unshift({
+			id: id ?? randomUUID(),
+			role,
+			content,
+		});
+	}
+
 	public async perform(
 		task: string,
 		role: Role = "user",
 		depth: number = 0
 	): Promise<K | void> {
-		if (role !== "system" || task !== this.lastMessage.content) {
-			this.addMessage({
+		const [message, ...contexts] = task.split("|");
+		if (contexts.length > 0) {
+			const context = contexts.join("|");
+			this.unshiftMessage({
+				role: "system",
+				content: context,
+			});
+		}
+		if (role !== "system" || message !== this.lastMessage.content) {
+			this.pushMessage({
 				role,
-				content: task,
+				content: message,
 			});
 		}
 		const completion = await this.client.chat.completions.create({
@@ -125,7 +149,7 @@ export class BaseAction<K = void> {
 					`INVALID_RESPONSE: ${this.id}, The response from the completion is null.`
 				);
 			}
-			this.addMessage({
+			this.pushMessage({
 				content: choice.message.content,
 				role: choice.message.role,
 			});
@@ -160,7 +184,6 @@ export class BaseAction<K = void> {
 			content = this.dewrapText(content);
 			if (content.trim().length === 0) {
 				this.history.pop();
-				// return "You have provided an empty response. Please follow the format instructed at the beginning of the conversation.";
 				return {
 					message: `Empty response is not a correct response. Reply according with your context: '${this.context}'`,
 				};
@@ -184,12 +207,12 @@ export class BaseAction<K = void> {
 	}
 
 	public updateContext(content: string) {
-		const newContext: Message = {
+		this.history[0].content = content;
+		this.unshiftMessage({
 			id: this.contextId,
 			role: "system",
 			content,
-		};
-		this.history[0] = newContext;
+		});
 	}
 
 	public get lastMessage() {

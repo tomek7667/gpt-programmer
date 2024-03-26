@@ -56,6 +56,13 @@ app.post("/actions", async (req, res) => {
 				data: await api.GetLinks.perform(data.message),
 			});
 		}
+		case Actions.VisitLink: {
+			return res.status(200).json({
+				success: true,
+				message: "Success",
+				data: await api.VisitLink.perform(data.message),
+			});
+		}
 		default: {
 			return res.status(400).json({
 				success: false,
@@ -166,4 +173,21 @@ app.listen(config.port, config.hostname, async () => {
 	// await api.WriteTaskList.perform(
 	// 	"Find recipes for rare finnish dishes, and then save just the links to them as ordered list in a file called finnish.txt"
 	// );
+	// Test 12. sandbox/00-18-49
+	// const links = await api.GetLinks.perform(
+	// 	"Cinnamon roll recipe, step by step guide"
+	// );
+	// if (links) {
+	// 	const firstLink = links[0];
+	// 	const content = await api.VisitLink.perform(firstLink.url);
+	// 	if (content) {
+	// 		await api.WriteFile.perform(
+	// 			`Save a cinnamon roll recipe to 'cinnamon_roll_recipe.txt' file based on the cinnamon roll recipe website context |{{{${content.content}}}`
+	// 		);
+	// 	} else {
+	// 		console.log("Test failed. No content found.");
+	// 	}
+	// } else {
+	// 	console.log("Test failed. No links found.");
+	// }
 });

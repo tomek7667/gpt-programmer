@@ -7,9 +7,10 @@ export const config = {
 		baseURL: "http://localhost:1234/v1",
 		apiKey: "lm-studio",
 	}),
-	maxDepth: 15,
+	maxDepth: 5,
 	model: "mistralai_mixtral-8x7b-instruct-v0.1",
 	verbose: false,
+	maxTokensContextSummarizer: 30000,
 	get host() {
 		return `http://${this.hostname}:${this.port}`;
 	},
