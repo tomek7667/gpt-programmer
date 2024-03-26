@@ -8,7 +8,8 @@ export const config = {
 		apiKey: "lm-studio",
 	}),
 	maxDepth: 5,
-	model: "mistralai_mixtral-8x7b-instruct-v0.1",
+	// TheBloke/Mistral-7B-Instruct-v0.2-GGUF/mistral-7b-instruct-v0.2.Q4_K_S.gguf
+	model: "mistralai_mistral-7b-instruct-v0.2",
 	verbose: false,
 	maxTokensContextSummarizer: 30000,
 	get host() {
