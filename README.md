@@ -34,6 +34,12 @@ Use a model of your choice, and give it superpowers with *GPT Programmer*. It al
 
 ## Development
 
+### Documentation
+
+- [TypeDoc documentation](https://gpt-programmer.cyber-man.pl/)
+
+### Extending actions
+
 If you would like to add a new action for the model, follow these steps:
 
 For adding action *AbcdAction*:

@@ -1,7 +1,10 @@
 name: Generate Documentation
 
 on:
-    workflow_dispatch
+    workflow_dispatch:
+    push:
+        branches:
+            - master
 
 jobs:
     build:
