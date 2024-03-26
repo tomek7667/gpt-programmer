@@ -19,6 +19,19 @@ Use a model of your choice, and give it superpowers with *GPT Programmer*. It al
 
 1. Run `yarn start` to start the API that will interact with the model
 
+## Roadmap
+
+- [x] Add possibility for the model to interact with the filesystem *(read, write, delete files and directories, preferably in a sandbox new directory - might be tricky to edit projects later)* with actions.
+- [x] Add an organizer action that will be able to call other actions in the system.
+- [ ] Add a way to run commands on the host system.
+- [ ] Add a way to list google search results.
+- [ ] Add a way to visit websites *(beautifully souped most probably)* and return the content.
+- [ ] Add `GetTree` action that will return a tree of the filesystem at the given path.
+- [ ] Make the `WriteTaskList` action ability to edit an already established project.
+- [ ] Add a Tester action that will verify that the previous action from the `TaskList` was successful or not. If it's not successful, it will try to run the action again.
+- [ ] Add a status to each task on the task list
+- [ ] Refactor `Api.ts` so that the [development section](##Development) is easier to extend, and each action is in a separate file.
+
 ## Development
 
 If you would like to add a new action for the model, follow these steps:
