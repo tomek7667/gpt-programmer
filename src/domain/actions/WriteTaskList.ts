@@ -1,6 +1,7 @@
+import { stringify } from "yaml";
+import { z } from "zod";
 import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
-import { z } from "zod";
 import { config } from "../../config";
 
 const examples: Example[] = [
@@ -45,9 +46,27 @@ const examples: Example[] = [
 			},
 		]),
 	},
+	{
+		role: "user",
+		content:
+			"Save links of pocketbase documentation to a file called links.txt",
+	},
+	{
+		role: "assistant",
+		content: formatWrap([
+			{
+				task: "GetLinks",
+				description: "Find pocketbase documentation",
+			},
+			{
+				task: "WriteFile",
+				description: "Write {{{RESULT_0}}} to the ./links.txt file",
+			},
+		]),
+	},
 ];
 
-export const WriteTaskList = (projectRoot: string) => {
+export const WriteTaskList = () => {
 	return new StandardAction({
 		type: Actions.WriteTaskList,
 		schema: Action.Schemas.WriteTaskList,
@@ -57,7 +76,24 @@ export const WriteTaskList = (projectRoot: string) => {
 			content: z.infer<typeof Action.Schemas.WriteTaskList>
 		) => {
 			try {
+				if (config.verbose) {
+					console.log(
+						"A plan to execute the tasks: ",
+						content
+							.map(
+								({ task, description }) =>
+									`"${task}":"${description}"`
+							)
+							.join(", ")
+					);
+				} else {
+					console.log(
+						"A plan to execute the tasks: ",
+						content.map((c) => c.task).join(", ")
+					);
+				}
 				const results: string[] = [];
+
 				// Unfortunately, a traditional for loop is required here to perform the tasks synchronously
 				for (let i = 0; i < content.length; i++) {
 					const { task, description } = content[i];
@@ -65,7 +101,7 @@ export const WriteTaskList = (projectRoot: string) => {
 					results.forEach((result, index) => {
 						message = message.replaceAll(
 							`{{{RESULT_${index}}}}`,
-							result
+							`YAML>>>${stringify(result)}<<<YAML`
 						);
 					});
 

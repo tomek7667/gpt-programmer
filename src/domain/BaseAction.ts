@@ -71,7 +71,7 @@ export class BaseAction<K = void> {
 			recursive: true,
 		});
 		writeFileSync(
-			path.join(__dirname, `../../${prefix}/contexts/${this.id}.json`),
+			path.join(__dirname, `../../${prefix}/actions/${this.id}.json`),
 			JSON.stringify(
 				{
 					id: this.id,

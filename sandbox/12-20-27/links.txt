@@ -1,0 +1,8 @@
+https://pocketbase.io/docs/api-files
+https://pocketbase.io/docs/api-collections
+https://pocketbase.io/docs/files-handling
+https://github.com/pocketbase/pocketbase
+https://pocketbase.io/docs/api-logs
+https://pocketbase.io/docs/api-settings
+https://pocketbase.io/docs
+https://pocketbase.io/docs/api-records

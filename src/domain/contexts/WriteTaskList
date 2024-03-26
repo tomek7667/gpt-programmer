@@ -26,7 +26,7 @@ Example 1 - Multiple tasks:
     },
     {
         "task": "ReadFiles",
-        "description": "Read contents of {{{RESULT_2}}}"
+        "description": "Read contents of '{{{RESULT_2}}}'"
     },
     {
         "task": "WriteFile",
@@ -37,4 +37,6 @@ Example 1 - Multiple tasks:
 
 Remember that if you want to reference a result from a previous task, you need to start indexing from 0, e.g. {{{RESULT_0}}} for task 1 result.
 
-When executing users task, pay attention only to the last user message, ignore all previous messages.
+Make sure that the tasks list is as short as possible, and only to achieve the user goal. You have all the tools you need to get real data. For example 'GetLinks' command can be used to get links from the internet.
+
+It is very important that you write as much details as possible in each task description in order to ensure the user goal is completely achieved. As opposed to shown examples, you have to write more descriptive task descriptions.

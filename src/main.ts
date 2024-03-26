@@ -154,4 +154,16 @@ app.listen(config.port, config.hostname, async () => {
 	// // { result: { stdout: 'Hello World!\r\n', stderr: '', error: '' } }
 	// Test 8.
 	// const result = await api.GetLinks.perform("ai blogs");
+	// Test 9. sandbox/12-20-27/links.txt
+	// await api.WriteTaskList.perform(
+	// 	"Save links of pocketbase documentation to a file called links.txt"
+	// );
+	// Test 10. sandbox/14-01-01/cinnamon-rolls.txt
+	// await api.WriteTaskList.perform(
+	// 	"Find recipes for cinnamon rolls, and then save links to them as ordered list in a file called cinnamon-rolls.txt"
+	// );
+	// Test 11. sandbox/14-50-02/finnish.txt
+	// await api.WriteTaskList.perform(
+	// 	"Find recipes for rare finnish dishes, and then save just the links to them as ordered list in a file called finnish.txt"
+	// );
 });

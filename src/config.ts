@@ -8,7 +8,7 @@ export const config = {
 		apiKey: "lm-studio",
 	}),
 	maxDepth: 15,
-	model: "deepseek-ai_deepseek-coder-6.7b-instruct",
+	model: "mistralai_mixtral-8x7b-instruct-v0.1",
 	verbose: false,
 	get host() {
 		return `http://${this.hostname}:${this.port}`;

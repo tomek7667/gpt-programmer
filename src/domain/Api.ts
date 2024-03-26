@@ -44,7 +44,7 @@ export class Api {
 	}
 
 	public get WriteTaskList() {
-		return WriteTaskList(this.projectRoot);
+		return WriteTaskList();
 	}
 
 	public get RunCommand() {

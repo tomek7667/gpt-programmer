@@ -13,7 +13,11 @@ export interface StandardActionData<K> {
 }
 
 const readContext = (filename: string) => {
-	return readFileSync(path.join(__dirname, filename), "utf-8");
+	return (
+		readFileSync(path.join(__dirname, filename), "utf-8") +
+		"\n" +
+		readFileSync(path.join(__dirname, "contexts/common"), "utf-8")
+	);
 };
 
 export class StandardAction<K = void> extends BaseAction<K> {

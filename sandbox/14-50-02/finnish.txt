@@ -1,0 +1,20 @@
+This is a list of Finnish food related links, books and other resources.
+
+- url: https://herfinland.com/finnish-foods/
+  title: 50+ Finnish foods and dishes from weird to divine - Her Finland
+- url: https://finland.fi/life-society/finnish-recipes/
+  title: Finnish recipes - thisisFINLAND
+- url: https://www.reddit.com/r/Finland/comments/150z8ag/can_yall_recommend_some_simple_tasty_finnish/
+  title: 'Can y\'all recommend some simple, tasty Finnish recipes? : r/Finland'
+- url: https://www.quora.com/What-are-some-traditional-recipes-from-Finland
+  title: 'What are some traditional recipes from Finland?' - Quora
+- url: https://www.pinterest.com/rosesandregrets/finnish-recipes/
+  title: 71 Best Finnish recipes ideas - Pinterest
+- url: https://www.edunation.co/blog/top-5-weird-looking-finnish-foods/
+  title: 'Top 5 Weirdest Foods in Finland: Be Sure to Give It a Try'
+- url: https://toolbox.finland.fi/wp-content/uploads/sites/2/2019/01/FINFO_Food_EN_links.pdf
+  title: '[PDF] UM FINFO (FIN)_FINFO_Food_EN - Finland Toolbox'
+- url: https://www.businessfinland.fi/492b8e/globalassets/julkaisut/bf_food-from-finland__eng.pdf
+  title: '[PDF] NATURALLY DELICIOUS' - Business Finland
+- url: https://www.food.com/recipe/finskt-lamm-finnish-lamb-62035
+  title: Finskt Lamm (Finnish Lamb) Recipe - Food.com

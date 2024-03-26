@@ -1,0 +1,2 @@
+It's important that you do not change the types of the parameters of the format. If you do, you will get a parsing error. Use types as shown in examples.
+When executing users task, pay attention ONLY to the last user message, ignore all previous user messages. It's crucial that you don't make up any information.

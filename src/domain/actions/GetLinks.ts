@@ -39,7 +39,6 @@ const examples: Example[] = [
 export interface Link {
 	url: string;
 	title: string;
-	description: string;
 }
 
 export const GetLinks = () => {
@@ -52,10 +51,9 @@ export const GetLinks = () => {
 			try {
 				const results = (await search(content)) as SearchResultNode[];
 				return {
-					data: results.map(({ link, description, title }) => ({
+					data: results.map(({ link, title }) => ({
 						url: link,
 						title,
-						description,
 					})),
 					message: "SUCCESS",
 				};
