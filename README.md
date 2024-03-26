@@ -1,11 +1,17 @@
-# GPT Programmer
+<h1 align="center">GPT Programmer</h2>
 
-Use a model of your choice, and give it superpowers with *GPT Programmer*. It allows the LLM to interact with:
+<p align="center">
+   <img src=".assets/ai.jfif" alt="Devika Logo" width="350">
+</p>
 
-- running commands on the host system,
-- the host file system,
-- the internet,
-- *any custom action, that you can implement in TypeScript.*
+<h2 align="center">Use a model of your choice, and give it superpowers with *GPT Programmer*. It allows the LLM to interact with:</h1>
+
+<div align="center">
+   <li>running commands on the host system</li>
+   <li>the host file system</li>
+   <li>the internet</li>
+   <li>*any custom action, that you can implement in TypeScript.*</li>
+</div>
 
 ## Setup
 
