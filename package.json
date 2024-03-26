@@ -9,10 +9,11 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist/",
+		"clean:sandbox": "node sandbox/clean.js",
 		"cf": "copyfiles -u 1 src/domain/contexts/* dist/",
 		"build:watch": "yarn cf && tsc -w",
 		"start:watch": "nodemon dist/main.js",
-		"start": "yarn clean && yarn cf && tsc && node dist/main.js",
+		"start": "yarn clean:sandbox && yarn clean && yarn cf && tsc && node dist/main.js",
 		"docs": "typedoc --out docs src/index.ts && copyfiles CNAME docs/"
 	},
 	"devDependencies": {

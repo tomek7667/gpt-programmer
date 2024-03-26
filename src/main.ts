@@ -173,7 +173,7 @@ app.listen(config.port, config.hostname, async () => {
 	// await api.WriteTaskList.perform(
 	// 	"Find recipes for rare finnish dishes, and then save just the links to them as ordered list in a file called finnish.txt"
 	// );
-	// Test 12. sandbox/00-18-49
+	// Test 12. sandbox/00-46-04/cinnamon_roll_recipe.txt
 	// const links = await api.GetLinks.perform(
 	// 	"Cinnamon roll recipe, step by step guide"
 	// );
