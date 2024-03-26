@@ -9,10 +9,11 @@
 	},
 	"scripts": {
 		"clean": "rimraf dist/",
-		"cf": "copyfiles -u 1 src/domain/actions/* dist/",
+		"cf": "copyfiles -u 1 src/domain/contexts/* dist/",
 		"build:watch": "yarn cf && tsc -w",
 		"start:watch": "nodemon dist/main.js",
-		"start": "yarn clean && yarn cf && tsc && node dist/main.js"
+		"start": "yarn clean && yarn cf && tsc && node dist/main.js",
+		"docs": "typedoc --out docs src/index.ts"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.21",
@@ -22,6 +23,7 @@
 		"openai": "^4.29.2",
 		"rimraf": "^5.0.5",
 		"ts-loader": "^9.5.1",
+		"typedoc": "^0.25.12",
 		"typescript": "^5.4.3",
 		"webpack": "^5.91.0"
 	},

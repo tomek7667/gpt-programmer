@@ -1,8 +1,8 @@
 import { z } from "zod";
 import bodyParser from "body-parser";
 import express from "express";
-import { A, AcceptedActions, Actions, api } from "./domain/Api";
-import { host, hostname, port } from "./config";
+import { api, Actions, A, AcceptedActions } from "./domain";
+import { config } from ".";
 
 const app = express();
 
@@ -56,8 +56,8 @@ app.post("/actions", async (req, res) => {
 	});
 });
 
-app.listen(port, hostname, async () => {
-	console.log(`Server is running on ${host}`);
+app.listen(config.port, config.hostname, async () => {
+	console.log(`Server is running on ${config.host}`);
 	// Test 1.
 	// await api.WriteFile.perform(
 	// 	"Create a ruby program that will print out fibonacci numbers up to 10. (or given N)"

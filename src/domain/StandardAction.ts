@@ -1,11 +1,10 @@
-import OpenAI from "openai";
 import { z } from "zod";
 import { BaseAction as BaseAction, Role } from "./BaseAction";
 import { readFileSync } from "fs";
 import path from "path";
-import { client, maxDepth, model, verbose } from "../config";
+import { config } from "../config";
 
-interface StandardActionData<K> {
+export interface StandardActionData<K> {
 	type: string;
 	schema: z.ZodType<any>;
 	contextPath: string;
@@ -20,11 +19,8 @@ const readContext = (filename: string) => {
 export class StandardAction<K = void> extends BaseAction<K> {
 	constructor(data: StandardActionData<K>) {
 		super({
-			client,
-			maxDepth,
-			model,
-			verbose,
 			context: readContext(data.contextPath),
+			...config,
 			...data,
 		});
 	}
