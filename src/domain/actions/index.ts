@@ -7,6 +7,7 @@ export enum Actions {
 	ListDirs = "ListDirs",
 	ReadFiles = "ReadFiles",
 	WriteTaskList = "WriteTaskList",
+	RunCommand = "RunCommand",
 }
 
 export const AcceptedActions = [
@@ -15,6 +16,7 @@ export const AcceptedActions = [
 	Actions.ListDirs,
 	Actions.ReadFiles,
 	Actions.WriteTaskList,
+	Actions.RunCommand,
 ];
 
 export const formatWrap = (object: object): string => {
@@ -32,6 +34,7 @@ const action = z.enum([
 	Actions.ListDirs,
 	Actions.ReadFiles,
 	Actions.WriteTaskList,
+	Actions.RunCommand,
 ]);
 
 export const Action = {
@@ -50,6 +53,10 @@ export const Action = {
 				description: z.string(),
 			})
 		),
+		RunCommand: z.object({
+			command: z.string(),
+			arguments: z.array(z.string()),
+		}),
 	},
 };
 
@@ -58,3 +65,4 @@ export * from "./WriteFile";
 export * from "./ListDirs";
 export * from "./ReadFiles";
 export * from "./WriteTaskList";
+export * from "./RunCommand";

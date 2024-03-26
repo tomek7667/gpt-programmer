@@ -42,6 +42,13 @@ app.post("/actions", async (req, res) => {
 			await api.WriteTaskList.perform(data.message);
 			break;
 		}
+		case Actions.RunCommand: {
+			return res.status(200).json({
+				success: true,
+				message: "Success",
+				data: await api.RunCommand.perform(data.message),
+			});
+		}
 		default: {
 			return res.status(400).json({
 				success: false,
@@ -130,4 +137,12 @@ app.listen(config.port, config.hostname, async () => {
 	// 	"Create helloworld.py python file with print of hello world, read it and then save it as second.py"
 	// );
 	// Success result test: sandbox/02-19-10
+	// Test 7.
+	// await api.WriteFile.perform(
+	// 	"Create a python main.py file with print of hello world"
+	// );
+	// const result = await api.RunCommand.perform("Run main.py file");
+	// console.log({ result });
+	// Success result test: sandbox/11-17-37
+	// // { result: { stdout: 'Hello World!\r\n', stderr: '', error: '' } }
 });

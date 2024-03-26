@@ -4,6 +4,7 @@ import {
 	DeleteFile,
 	ListDirs,
 	ReadFiles,
+	RunCommand,
 	WriteFile,
 	WriteTaskList,
 } from "./actions";
@@ -43,6 +44,10 @@ export class Api {
 
 	public get WriteTaskList() {
 		return WriteTaskList(this.projectRoot);
+	}
+
+	public get RunCommand() {
+		return RunCommand(this.projectRoot);
 	}
 }
 

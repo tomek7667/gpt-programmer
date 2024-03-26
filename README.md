@@ -30,7 +30,7 @@
 - [x] Add possibility for the model to interact with the filesystem *(read, write, delete files and directories, preferably in a sandbox new directory - might be tricky to edit projects later)* with actions.
 - [x] Add an organizer action that will be able to call other actions in the system.
 - [x] Refactor `Api.ts` so that the [development section](#Development) is easier to extend, and each action is in a separate file.
-- [ ] Add a way to run commands on the host system.
+- [x] Add a way to run commands on the host system.
 - [ ] Add a way to list google search results.
 - [ ] Add a way to visit websites *(beautifully souped most probably)* and return the content.
 - [ ] Add `GetTree` action that will return a tree of the filesystem at the given path.
