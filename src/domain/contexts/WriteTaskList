@@ -9,6 +9,7 @@ The available commands are:
 - RunCommand - Runs a command in the terminal, returns `{output: string}` to you
 - GetLinks - Searches for links on the internet, returns a json list `{url: string; title: string; description: string}[]` to you
 - VisitLink - Returns the content of the link that is present in the description of the task. Maximum 1 link can be visited in a single task. Returns a json `{content: string}` to you
+- GetTree - Returns a tree structure of the given directory, returns a yaml string to you in {{{RESULT_i}}} variable as `{tree: string}`
 
 Example 1 - Multiple tasks:
 {DATA}

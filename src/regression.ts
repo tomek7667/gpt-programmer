@@ -274,6 +274,43 @@ const tests = [
 		}
 		return true;
 	},
+
+	// test11
+	async () => {
+		const api = makeApi("test11");
+		await api.WriteFile.perform(
+			"Create a file called 'essa.txt' ('helloworld' inside), then create a directory called 'abc' then, inside that directory, create a file called 'def.txt' ('belloworld' inside)"
+		);
+
+		// Assert
+		const files = readdirSync("sandbox/test11");
+		if (!files.includes("abc")) {
+			console.log("test11: 'abc' not found".red);
+			return false;
+		}
+		if (!files.includes("essa.txt")) {
+			console.log("test11: 'essa.txt' not found".red);
+			return false;
+		}
+		const abcFiles = readdirSync("sandbox/test11/abc");
+		if (!abcFiles.includes("def.txt")) {
+			console.log("test11: 'def.txt' not found".red);
+			return false;
+		}
+
+		const result = await api.GetTree.perform("inside current directory");
+		if (!result) {
+			console.log("test11: result is undefined".red);
+			return false;
+		}
+		if (!result.tree.includes("abc") || !result.tree.includes("essa.txt")) {
+			console.log(
+				"test11: result.tree doesn't include 'abc' or 'essa.txt'".red
+			);
+			return false;
+		}
+		return true;
+	},
 ];
 
 export const performRegression = async () => {
@@ -283,35 +320,40 @@ export const performRegression = async () => {
 	const testSummary: { [key: string]: boolean } = {};
 	try {
 		for (let i = 0; i < tests.length; i++) {
-			const test = tests[i];
-			console.log(
-				`==============================================================\n\t\t\tRunning test ${
-					i + 1
-				}\n==============================================================`
-					.cyan.bold
-			);
-			for (
-				let trialNumber = 0;
-				trialNumber < config.retryRegressionNumber - 1;
-				trialNumber++
-			) {
-				const isSuccess = await test();
-				if (isSuccess) {
-					console.log(`\t\t\tTest ${i + 1} passed!`.green.bold);
-					testSummary[`Test ${i + 1}`] = true;
-					break;
-				}
-				rmSync(`sandbox/test${i + 1}`, { recursive: true });
-				testSummary[`Test ${i + 1}`] = false;
-			}
-			if (testSummary[`Test ${i + 1}`] === false) {
-				const isSuccess = await test();
-				if (isSuccess) {
-					console.log(`Test ${i + 1} passed!`.green);
-					testSummary[`Test ${i + 1}`] = true;
-				} else {
+			try {
+				const test = tests[i];
+				console.log(
+					`==============================================================\n\t\t\tRunning test ${
+						i + 1
+					}\n==============================================================`
+						.cyan.bold
+				);
+				for (
+					let trialNumber = 0;
+					trialNumber < config.retryRegressionNumber - 1;
+					trialNumber++
+				) {
+					const isSuccess = await test();
+					if (isSuccess) {
+						console.log(`\t\t\tTest ${i + 1} passed!`.green.bold);
+						testSummary[`Test ${i + 1}`] = true;
+						break;
+					}
+					rmSync(`sandbox/test${i + 1}`, { recursive: true });
 					testSummary[`Test ${i + 1}`] = false;
 				}
+				if (testSummary[`Test ${i + 1}`] === false) {
+					const isSuccess = await test();
+					if (isSuccess) {
+						console.log(`\t\t\tTest ${i + 1} passed!`.green.bold);
+						testSummary[`Test ${i + 1}`] = true;
+					} else {
+						testSummary[`Test ${i + 1}`] = false;
+					}
+				}
+			} catch (e) {
+				console.log(`\t\t\tTest ${i + 1} failed!`.red.bold);
+				testSummary[`Test ${i + 1}`] = false;
 			}
 		}
 	} finally {
@@ -319,3 +361,5 @@ export const performRegression = async () => {
 		console.log(testSummary);
 	}
 };
+
+performRegression();

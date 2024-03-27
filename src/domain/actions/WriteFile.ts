@@ -37,6 +37,21 @@ const examples: Example[] = [
 			},
 		]),
 	},
+	{
+		role: "user",
+		content:
+			"Write YAML>>>- url: https://herfinland.com/finnish-foods/\n  title: 50+ Finnish foods and dishes from weird to divine - Her Finland\n- url: https://finland.fi/life-society/finnish-cuisine-recipes/\n<<<YAML to ./abc.yaml file.",
+	},
+	{
+		role: "assistant",
+		content: formatWrap([
+			{
+				path: "./abc.yaml",
+				content:
+					"- url: https://herfinland.com/finnish-foods/\n  title: 50+ Finnish foods and dishes from weird to divine - Her Finland\n- url: https://finland.fi/life-society/finnish-cuisine-recipes/",
+			},
+		]),
+	},
 ];
 
 export const WriteFile = (projectRoot: string) => {

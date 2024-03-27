@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import express from "express";
 import { Action, Actions, AcceptedActions, Api } from "./domain";
 import { config } from ".";
-import { performRegression } from "./regression";
 
 const app = express();
 
@@ -65,6 +64,13 @@ app.post("/actions", async (req, res) => {
 				data: await api.VisitLink.perform(data.message),
 			});
 		}
+		case Actions.GetTree: {
+			return res.status(200).json({
+				success: true,
+				message: "Success",
+				data: await api.GetTree.perform(data.message),
+			});
+		}
 		default: {
 			return res.status(400).json({
 				success: false,
@@ -81,7 +87,4 @@ app.post("/actions", async (req, res) => {
 
 app.listen(config.port, config.hostname, async () => {
 	console.log(`Server is running on ${config.host}`);
-	if (config.performRegression) {
-		await performRegression();
-	}
 });

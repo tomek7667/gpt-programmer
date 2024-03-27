@@ -34,7 +34,7 @@
 - [x] Add a way to list google search results.
 - [x] Add a way to visit websites *(beautifully souped most probably)* and return the content.
 - [x] Add easy regression testing for all actions
-- [ ] Add `GetTree` action that will return a tree of the filesystem at the given path.
+- [x] Add `GetTree` action that will return a tree of the filesystem at the given path.
 - [ ] Make the `WriteTaskList` action ability to edit an already established project.
 - [ ] Add a Tester action that will verify that the previous action from the `TaskList` was successful or not. If it's not successful, it will try to run the action again.
 - [ ] Add a status to each task on the task list

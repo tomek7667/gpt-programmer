@@ -9,6 +9,7 @@ import {
 	WriteTaskList,
 	RunCommand,
 	VisitLink,
+	GetTree,
 } from "./actions";
 import { Summarizer } from "./Summarizer";
 import { config } from "../config";
@@ -24,7 +25,7 @@ export class Api {
 
 	constructor(data: ApiCreateData = {}) {
 		if (data.workDir) {
-			this.projectRoot = path.join(__dirname, "../../", data.workDir);
+			this.projectRoot = path.resolve(data.workDir);
 		} else {
 			this.projectRoot = path.join(
 				__dirname,
@@ -61,7 +62,7 @@ export class Api {
 	}
 
 	public get WriteTaskList() {
-		return WriteTaskList();
+		return WriteTaskList(this.projectRoot);
 	}
 
 	public get RunCommand() {
@@ -74,6 +75,10 @@ export class Api {
 
 	public get VisitLink() {
 		return VisitLink(this);
+	}
+
+	public get GetTree() {
+		return GetTree(this.projectRoot);
 	}
 
 	public get summarizer() {

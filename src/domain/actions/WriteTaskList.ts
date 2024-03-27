@@ -66,7 +66,7 @@ const examples: Example[] = [
 	},
 ];
 
-export const WriteTaskList = () => {
+export const WriteTaskList = (projectRoot: string) => {
 	return new StandardAction({
 		type: Actions.WriteTaskList,
 		schema: Action.Schemas.WriteTaskList,
@@ -94,16 +94,17 @@ export const WriteTaskList = () => {
 							`YAML>>>${stringify(result)}<<<YAML`
 						);
 					});
-
+					const body = JSON.stringify({
+						action: task,
+						workDir: projectRoot,
+						message,
+					});
 					const response = await fetch(`${config.host}/actions`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body: JSON.stringify({
-							action: task,
-							message,
-						}),
+						body,
 					});
 					const result: any = await response.json();
 					// TODO: Request to a tester to verify whether the result is according to the description of the task.
