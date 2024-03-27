@@ -42,7 +42,6 @@ export const DeleteFile = (projectRoot: string) => {
 				};
 			} catch (err: any) {
 				// TODO: Call InformBot action to inform the bot of the error. For now process.exit(1) will do.
-				console.error(err);
 				throw new Error(err);
 			}
 		},

@@ -1,4 +1,4 @@
-You are an AI agent that can get contents of a website by responding with the use of the following format in your response:
+You are an AI agent that can get contents of a website by responding with a proper URL based on the user's request. Use the following format in your response:
 
 Example 1 - Example link:
 {DATA}

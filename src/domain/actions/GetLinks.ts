@@ -47,7 +47,12 @@ export const GetLinks = () => {
 		schema: Action.Schemas.GetLinks,
 		contextPath: "contexts/GetLinks",
 		examples,
-		action: async (content: z.infer<typeof Action.Schemas.GetLinks>) => {
+		action: async (
+			content: z.infer<typeof Action.Schemas.GetLinks>
+		): Promise<{
+			message: string;
+			data: Link[];
+		}> => {
 			try {
 				const results = (await search(content)) as SearchResultNode[];
 				return {
@@ -58,7 +63,13 @@ export const GetLinks = () => {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
-				console.log(err);
+				if (err?.response?.status === 429) {
+					console.log("Rate limited, retrying in 15 seconds");
+					await new Promise((resolve) => setTimeout(resolve, 15_000));
+					throw new Error(
+						"The request was rate limited. Retrying..."
+					);
+				}
 				throw new Error(err);
 			}
 		},

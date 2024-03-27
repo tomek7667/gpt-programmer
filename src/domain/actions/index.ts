@@ -47,6 +47,7 @@ export const Action = {
 	Create: z.object({
 		action,
 		message: z.string(),
+		workDir: z.optional(z.string()),
 	}),
 	Schemas: {
 		DeleteFile: z.array(z.string()),

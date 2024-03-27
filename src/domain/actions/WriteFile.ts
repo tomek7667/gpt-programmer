@@ -3,6 +3,7 @@ import { Actions, Action, Example, formatWrap } from ".";
 import { StandardAction } from "..";
 import path from "path";
 import { z } from "zod";
+import { config } from "../../config";
 
 const examples: Example[] = [
 	{
@@ -56,9 +57,20 @@ export const WriteFile = (projectRoot: string) => {
 							p.split("/").slice(0, -1).join("/")
 						);
 						if (dir !== "" && dir !== ".") {
+							if (config.verbose) {
+								console.log(
+									`WriteFile: creating directory ${dir}`
+								);
+							}
 							mkdirSync(dir, { recursive: true });
 						}
-						writeFileSync(path.resolve(projectRoot, p), content, {
+						const finalPath = path.resolve(projectRoot, p);
+						if (config.verbose) {
+							console.log(
+								`WriteFile: writing to file ${finalPath} (${content.length} bytes)`
+							);
+						}
+						writeFileSync(finalPath, content, {
 							encoding: "utf-8",
 						});
 					}
@@ -68,7 +80,6 @@ export const WriteFile = (projectRoot: string) => {
 				};
 			} catch (err: any) {
 				// TODO: Call InformBot action to inform the bot of the error. For now process.exit(1) will do.
-				console.error(err);
 				throw new Error(err);
 			}
 		},

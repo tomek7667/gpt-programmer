@@ -51,7 +51,6 @@ export const ReadFiles = (projectRoot: string) => {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
-				console.log(err);
 				throw new Error(err);
 			}
 		},

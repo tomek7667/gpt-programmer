@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Actions, Action, Example, formatWrap } from ".";
-import { api, StandardAction } from "..";
+import { Api, StandardAction } from "..";
 
 const examples: Example[] = [
 	{
@@ -41,7 +41,7 @@ export interface Website {
 	content: string;
 }
 
-export const VisitLink = () => {
+export const VisitLink = (api: Api) => {
 	return new StandardAction<Website>({
 		type: Actions.VisitLink,
 		schema: Action.Schemas.VisitLink,
@@ -68,7 +68,6 @@ export const VisitLink = () => {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
-				console.log(err);
 				throw new Error(err);
 			}
 		},

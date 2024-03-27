@@ -62,8 +62,6 @@ export class BaseAction<K = void> {
 				role,
 			})
 		);
-
-		console.log(`Created ${this.id}`);
 	}
 
 	public saveSelf(prefix = "debug") {

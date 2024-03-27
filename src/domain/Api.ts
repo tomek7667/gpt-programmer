@@ -15,18 +15,32 @@ import { config } from "../config";
 
 const now = new Date();
 
-export class Api {
-	public projectRoot = path.join(
-		__dirname,
-		"../../",
-		"sandbox",
-		`${String(now.getHours()).padStart(2, "0")}-${String(
-			now.getMinutes()
-		).padStart(2, "0")}-${String(now.getSeconds()).padStart(2, "0")}`
-	);
+interface ApiCreateData {
+	workDir?: string;
+}
 
-	constructor() {
-		console.log("Working in:", this.projectRoot);
+export class Api {
+	public projectRoot: string;
+
+	constructor(data: ApiCreateData = {}) {
+		if (data.workDir) {
+			this.projectRoot = path.join(__dirname, "../../", data.workDir);
+		} else {
+			this.projectRoot = path.join(
+				__dirname,
+				"../../",
+				"sandbox",
+				`${String(now.getHours()).padStart(2, "0")}-${String(
+					now.getMinutes()
+				).padStart(2, "0")}-${String(now.getSeconds()).padStart(
+					2,
+					"0"
+				)}`
+			);
+		}
+		if (config.verbose) {
+			console.log(`Api working at: ${this.projectRoot}`);
+		}
 		mkdirSync(this.projectRoot, { recursive: true });
 	}
 
@@ -59,7 +73,7 @@ export class Api {
 	}
 
 	public get VisitLink() {
-		return VisitLink();
+		return VisitLink(this);
 	}
 
 	public get summarizer() {
@@ -69,5 +83,3 @@ export class Api {
 		});
 	}
 }
-
-export const api = new Api();

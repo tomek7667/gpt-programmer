@@ -79,16 +79,6 @@ export const WriteTaskList = () => {
 				if (config.verbose) {
 					console.log(
 						"A plan to execute the tasks: ",
-						content
-							.map(
-								({ task, description }) =>
-									`"${task}":"${description}"`
-							)
-							.join(", ")
-					);
-				} else {
-					console.log(
-						"A plan to execute the tasks: ",
 						content.map((c) => c.task).join(", ")
 					);
 				}
@@ -123,7 +113,6 @@ export const WriteTaskList = () => {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
-				console.error(err);
 				throw new Error(err);
 			}
 		},
