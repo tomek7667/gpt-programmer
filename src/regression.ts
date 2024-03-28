@@ -1,5 +1,11 @@
 import colors from "colors";
-import { mkdirSync, readdirSync, readFileSync, rmSync } from "fs";
+import {
+	mkdirSync,
+	readdirSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "fs";
 import { Api } from "./domain";
 import { config } from "./config";
 
@@ -311,23 +317,86 @@ const tests = [
 		}
 		return true;
 	},
+
+	// test12
+	async () => {
+		mkdirSync("sandbox/test12");
+		mkdirSync("sandbox/test12/abc");
+		mkdirSync("sandbox/test12/def");
+		mkdirSync("sandbox/test12/def/ghi");
+		mkdirSync("sandbox/test12/abc/ghi");
+		mkdirSync("sandbox/test12/abc/jkl");
+		mkdirSync("sandbox/test12/def/mno");
+		mkdirSync("sandbox/test12/def/ghi/pqr");
+		writeFileSync("sandbox/test12/abc/ghi/xyz.txt", "hello world");
+		writeFileSync("sandbox/test12/abc/jkl/xyz.txt", "hello world");
+		writeFileSync("sandbox/test12/def/mno/xyz.txt", "hello world");
+		writeFileSync("sandbox/test12/def/ghi/pqr/xyz.txt", "hello world");
+		await makeApi("test12").WriteTaskList.perform(
+			"Save tree structure of current dir to a file called 'tree.txt'"
+		);
+
+		// Assert
+		const test12Files = readdirSync("sandbox/test12");
+		if (!test12Files.includes("tree.txt")) {
+			console.log("test12: 'tree.txt' not found".red);
+			return false;
+		}
+		const treeTxtContent = readFileSync("sandbox/test12/tree.txt", "utf-8");
+		if (
+			!treeTxtContent.includes("abc") ||
+			!treeTxtContent.includes("def")
+		) {
+			console.log(
+				"test12: treeTxtContent doesn't include 'abc' or 'def'".red
+			);
+			return false;
+		}
+		return true;
+	},
 ];
 
-export const performRegression = async () => {
+const printSpacer = () => {
+	console.log(
+		`==============================================================`.cyan
+			.bold
+	);
+};
+
+export const performRegression = async (testNumber?: number) => {
 	colors.enable();
 	rmSync("sandbox", { recursive: true });
 	mkdirSync("sandbox", { recursive: true });
 	const testSummary: { [key: string]: boolean } = {};
+	printSpacer;
+	if (testNumber !== undefined) {
+		try {
+			const test = tests[testNumber - 1];
+			const isSuccess = await test();
+			if (isSuccess) {
+				printSpacer();
+				console.log(`\t\t\tTest ${testNumber} passed!`.green.bold);
+				printSpacer();
+			} else {
+				printSpacer();
+				console.log(`\t\t\tTest ${testNumber} failed!`.red.bold);
+				printSpacer();
+			}
+		} catch (e) {
+			console.log(e);
+			printSpacer();
+			console.log(`\t\t\tTest ${testNumber} failed!`.red.bold);
+			printSpacer();
+		}
+		return;
+	}
+
 	try {
 		for (let i = 0; i < tests.length; i++) {
 			try {
 				const test = tests[i];
-				console.log(
-					`==============================================================\n\t\t\tRunning test ${
-						i + 1
-					}\n==============================================================`
-						.cyan.bold
-				);
+				printSpacer();
+				console.log(`\t\t\tRunning test ${i + 1}`);
 				for (
 					let trialNumber = 0;
 					trialNumber < config.retryRegressionNumber - 1;
@@ -356,10 +425,11 @@ export const performRegression = async () => {
 				testSummary[`Test ${i + 1}`] = false;
 			}
 		}
+		printSpacer();
 	} finally {
 		console.log("\n\n\t\t\tRegression summary:\t\t\t\n".bgBlack.white);
 		console.log(testSummary);
 	}
 };
 
-performRegression();
+performRegression(process.argv[2] ? Number(process.argv[2]) : undefined);

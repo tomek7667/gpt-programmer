@@ -64,6 +64,25 @@ const examples: Example[] = [
 			},
 		]),
 	},
+	{
+		role: "user",
+		content:
+			"Create a tree structure of an existing project at './example/' directory and save it to a file",
+	},
+	{
+		role: "assistant",
+		content: formatWrap([
+			{
+				task: "GetTree",
+				description: "Current directory",
+			},
+			{
+				task: "WriteFile",
+				description:
+					"Write the tree structure given in the context to 'tree_structure.yaml' file |{{{RESULT_0}}}",
+			},
+		]),
+	},
 ];
 
 export const WriteTaskList = (projectRoot: string) => {
@@ -76,7 +95,7 @@ export const WriteTaskList = (projectRoot: string) => {
 			content: z.infer<typeof Action.Schemas.WriteTaskList>
 		) => {
 			try {
-				if (config.verbose) {
+				if (true || config.verbose) {
 					console.log(
 						"A plan to execute the tasks: ",
 						content.map((c) => c.task).join(", ")
@@ -94,6 +113,7 @@ export const WriteTaskList = (projectRoot: string) => {
 							`YAML>>>${stringify(result)}<<<YAML`
 						);
 					});
+					console.log({ message });
 					const body = JSON.stringify({
 						action: task,
 						workDir: projectRoot,
@@ -114,6 +134,7 @@ export const WriteTaskList = (projectRoot: string) => {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
+				console.log("Error: ", err);
 				throw new Error(err);
 			}
 		},
