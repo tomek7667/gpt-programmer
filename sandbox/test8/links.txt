@@ -1,0 +1,20 @@
+- url: https://pocketbase.io/docs
+  title: Introduction - Docs - PocketBase
+- url: https://pocketbase.io/docs/api-files
+  title: Web APIs reference - API Files - Docs - PocketBase
+- url: https://pocketbase.io/docs/api-collections
+  title: Web APIs reference - API Collections - Docs - PocketBase
+- url: https://pocketbase.io/docs/files-handling
+  title: Files upload and handling - Docs - PocketBase
+- url: https://pocketbase.io/docs/api-logs
+  title: Web APIs reference - API Logs - Docs - PocketBase
+- url: https://github.com/pocketbase/pocketbase
+  title: pocketbase/pocketbase: Open Source realtime backend in 1 file
+- url: https://pocketbase.io/docs/api-settings
+  title: Web APIs reference - API Settings - Docs - PocketBase
+- url: https://github.com/pocketbase/pocketbase/discussions/647
+  title: Client SDK for the File API #647 - GitHub
+- url: https://pocketbase.io/docs/collections
+  title: Collections - Docs - PocketBase
+- url: https://pocketbase.io/docs/api-records
+  title: Web APIs reference - API Records - Docs - PocketBase

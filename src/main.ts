@@ -15,74 +15,18 @@ app.post("/actions", async (req, res) => {
 			res.status(400).json(parsed);
 			return;
 		}
-		const data: z.infer<typeof Action.Create> = parsed.data;
-		const api = new Api(data);
-		switch (data.action) {
-			case Actions.DeleteFile: {
-				await api.DeleteFile.perform(data.message);
-				break;
-			}
-			case Actions.WriteFile: {
-				await api.WriteFile.perform(data.message);
-				break;
-			}
-			case Actions.ListDirs: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.ListDirs.perform(data.message),
-				});
-			}
-			case Actions.ReadFiles: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.ReadFiles.perform(data.message),
-				});
-			}
-			case Actions.WriteTaskList: {
-				await api.WriteTaskList.perform(data.message);
-				break;
-			}
-			case Actions.RunCommand: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.RunCommand.perform(data.message),
-				});
-			}
-			case Actions.GetLinks: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.GetLinks.perform(data.message),
-				});
-			}
-			case Actions.VisitLink: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.VisitLink.perform(data.message),
-				});
-			}
-			case Actions.GetTree: {
-				return res.status(200).json({
-					success: true,
-					message: "Success",
-					data: await api.GetTree.perform(data.message),
-				});
-			}
-			default: {
-				return res.status(400).json({
-					success: false,
-					message: `Unknown action: ${data.action}. AcceptedActions: ${AcceptedActions}`,
-				});
-			}
-		}
+		const { action, workDir, message }: z.infer<typeof Action.Create> =
+			parsed.data;
+		const api = new Api({
+			workDir,
+		});
+
+		const result = await api.action(action).perform(message);
 
 		return res.status(200).json({
 			success: true,
 			message: "Success",
+			data: result,
 		});
 	} catch (err: any) {
 		return res.status(500).json({

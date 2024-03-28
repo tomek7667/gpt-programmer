@@ -40,13 +40,13 @@ const examples: Example[] = [
 	{
 		role: "user",
 		content:
-			"Write YAML>>>- url: https://herfinland.com/finnish-foods/\n  title: 50+ Finnish foods and dishes from weird to divine - Her Finland\n- url: https://finland.fi/life-society/finnish-cuisine-recipes/\n<<<YAML to ./abc.yaml file.",
+			"Write YAML>>>- url: https://herfinland.com/finnish-foods/\n  title: 50+ Finnish foods and dishes from weird to divine - Her Finland\n- url: https://finland.fi/life-society/finnish-cuisine-recipes/\n<<<YAML to ./abc.txt file.",
 	},
 	{
 		role: "assistant",
 		content: formatWrap([
 			{
-				path: "./abc.yaml",
+				path: "./abc.txt",
 				content:
 					"- url: https://herfinland.com/finnish-foods/\n  title: 50+ Finnish foods and dishes from weird to divine - Her Finland\n- url: https://finland.fi/life-society/finnish-cuisine-recipes/",
 			},
@@ -55,43 +55,54 @@ const examples: Example[] = [
 ];
 
 export const WriteFile = (projectRoot: string) => {
-	return new StandardAction({
+	interface WriteFileResult {
+		outputFullPath: string;
+		outputRelativePath: string;
+	}
+	return new StandardAction<WriteFileResult[]>({
 		type: Actions.WriteFile,
 		schema: Action.Schemas.WriteFile,
 		contextPath: "contexts/WriteFile",
 		examples,
 		action: async (content: z.infer<typeof Action.Schemas.WriteFile>) => {
 			try {
-				content.map(({ content, path: p }) => {
-					if (p[p.length - 1] === "/") {
-						mkdirSync(path.resolve(projectRoot, p), {
-							recursive: true,
-						});
-					} else {
-						const dir = path.resolve(
-							p.split("/").slice(0, -1).join("/")
-						);
-						if (dir !== "" && dir !== ".") {
+				const results: WriteFileResult[] = content.map(
+					({ content, path: p }) => {
+						if (p[p.length - 1] === "/") {
+							mkdirSync(path.resolve(projectRoot, p), {
+								recursive: true,
+							});
+						} else {
+							const dir = path.resolve(
+								p.split("/").slice(0, -1).join("/")
+							);
+							if (dir !== "" && dir !== ".") {
+								if (config.verbose) {
+									console.log(
+										`WriteFile: creating directory ${dir}`
+									);
+								}
+								mkdirSync(dir, { recursive: true });
+							}
+							const finalPath = path.resolve(projectRoot, p);
 							if (config.verbose) {
 								console.log(
-									`WriteFile: creating directory ${dir}`
+									`WriteFile: writing to file ${finalPath} (${content.length} bytes)`
 								);
 							}
-							mkdirSync(dir, { recursive: true });
+							writeFileSync(finalPath, content, {
+								encoding: "utf-8",
+							});
 						}
-						const finalPath = path.resolve(projectRoot, p);
-						if (config.verbose) {
-							console.log(
-								`WriteFile: writing to file ${finalPath} (${content.length} bytes)`
-							);
-						}
-						writeFileSync(finalPath, content, {
-							encoding: "utf-8",
-						});
+						return {
+							outputFullPath: path.resolve(projectRoot, p),
+							outputRelativePath: p,
+						};
 					}
-				});
+				);
 				return {
 					message: "SUCCESS",
+					data: results,
 				};
 			} catch (err: any) {
 				// TODO: Call InformBot action to inform the bot of the error. For now process.exit(1) will do.

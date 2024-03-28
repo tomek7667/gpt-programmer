@@ -95,14 +95,14 @@ export const WriteTaskList = (projectRoot: string) => {
 			content: z.infer<typeof Action.Schemas.WriteTaskList>
 		) => {
 			try {
-				if (true || config.verbose) {
+				if (config.verbose) {
 					console.log(
 						"A plan to execute the tasks: ",
 						content.map((c) => c.task).join(", ")
 					);
 				}
 				const results: string[] = [];
-
+				const testings = new Map<number, number>();
 				// Unfortunately, a traditional for loop is required here to perform the tasks synchronously
 				for (let i = 0; i < content.length; i++) {
 					const { task, description } = content[i];
@@ -113,28 +113,83 @@ export const WriteTaskList = (projectRoot: string) => {
 							`YAML>>>${stringify(result)}<<<YAML`
 						);
 					});
-					console.log({ message });
-					const body = JSON.stringify({
+					const bodyTask = {
 						action: task,
 						workDir: projectRoot,
 						message,
-					});
-					const response = await fetch(`${config.host}/actions`, {
+					};
+					const responseTask = await fetch(`${config.host}/actions`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
-						body,
+						body: JSON.stringify(bodyTask),
 					});
-					const result: any = await response.json();
-					// TODO: Request to a tester to verify whether the result is according to the description of the task.
-					results.push(result["data"] ?? "");
+					const result: {
+						success: boolean;
+						message: "Success" | string;
+						data?: any;
+					} = (await responseTask.json()) as any;
+
+					const messageTest = JSON.stringify({
+						taskList: content,
+						currentTask: content[i],
+						currentTaskResult: result,
+					});
+					const bodyTest = {
+						action: Actions.Test,
+						workDir: projectRoot,
+						message: messageTest,
+					};
+					const responseTest = await fetch(`${config.host}/actions`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(bodyTest),
+					});
+					const {
+						data: testResultData,
+						message: testResultMessage,
+						success: testResultSuccess,
+					}: {
+						success: boolean;
+						message: "Success" | string;
+						data: {
+							message: string;
+							result: "error" | "ok";
+						};
+					} = (await responseTest.json()) as any;
+					if (!testResultSuccess) {
+						throw new Error(testResultMessage);
+					}
+					const t = testings.get(i);
+					if (t === undefined) {
+						testings.set(i, 0);
+					} else {
+						testings.set(i, t + 1);
+						if (t > config.retryTestingNumber) {
+							throw new Error(
+								`The task ${task} didn't pass the test ${t} times. Investigate or increate config.retryTestingNumber (${config.retryTestingNumber}). The task will not be retried anymore. last test result message: '${testResultData.message}'. Test message: ${messageTest}`
+							);
+						}
+					}
+
+					if (testResultData.result === "error") {
+						if (config.verbose) {
+							console.log(
+								`Tester did not approve the task: ${task}. The reason is: ${testResultData.message}`
+							);
+						}
+						i = i - 1;
+					} else {
+						results.push(result["data"] ?? "");
+					}
 				}
 				return {
 					message: "SUCCESS",
 				};
 			} catch (err: any) {
-				console.log("Error: ", err);
 				throw new Error(err);
 			}
 		},

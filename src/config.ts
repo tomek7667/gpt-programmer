@@ -12,6 +12,7 @@ export const config = {
 	model: "mistralai_mistral-7b-instruct-v0.2",
 	verbose: false,
 	retryRegressionNumber: 5,
+	retryTestingNumber: 10,
 	maxTokensContextSummarizer: 30000,
 	getTreeIgnore: [
 		"node_modules",

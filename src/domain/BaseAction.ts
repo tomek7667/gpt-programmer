@@ -168,9 +168,9 @@ export class BaseAction<K = void> {
 				console.log(output);
 			}
 			// pop the last message
-			// TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
-			this.history.pop();
-			return await this.perform(output.message, "system", depth + 1);
+			// // TODO: This should be somehow different. Still IMO it's better to inform the model where it is failing
+			// this.history.pop();
+			return await this.perform(output.message, "user", depth + 1);
 		}
 		return output.data;
 	}

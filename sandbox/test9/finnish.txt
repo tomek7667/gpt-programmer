@@ -1,0 +1,21 @@
+- url: https://herfinland.com/finnish-foods/
+title: 50+ Finnish foods and dishes from weird to divine - Her Finland
+- url: https://finland.fi/life-society/finnish-cuisine-recipes/
+- url: https://www.food.com/recipe/sailors-beef-casserole-merimiespihvi-finnish-375152
+title: Sailor's Beef Casserole (Merimiespihvi) - Finnish Recipe - Food.com
+- url: https://www.food.com/recipe/finnish-beef-ragout-palapaisti-finland-375153
+title: Finnish Beef Ragout (Palapaisti - Finland) Recipe - Food.com
+- url: https://www.allrecipes.com/recipe/16889/finnish-style-mojakka/
+title: Finnish-Style Mojakka Recipe - Allrecipes
+- url: https://www.facebook.com/herfinland/videos/if-you-ask-a-finn-whats-the-most-iconic-savory-dish-in-finland-they-will-most-li/815265349826251/
+title: If you ask a Finn what's the most iconic savory dish in Finland, they ...
+- url: https://www.pinterest.com/pin/271482683764956849/
+title: &#34;Recipe for Finland&#39;s National Dish: Karjalan Paisti (Karelian Hot Pot)&#34;
+- url: https://www.youtube.com/watch?v=KfEG84N7l38
+title: Finnish Karelian Stew Recipe (Karjalanpaisti) - YouTube
+- url: https://cookpad.com/us/recipes/155003-a-home-cooked-recipe-from-finland-lihakeitto-beef-soup
+title: &#34;A Home Cooked Recipe from Finland: Lihakeitto (Beef Soup)&#34;
+- url: https://finland.fi/life-society/finnish-recipes/
+title: Finnish recipes - thisisFINLAND
+- url: https://foodgeeks.com/recipes/finnish-three-meat-ragout-karjalan-paisti-20053
+title: &#34;Finnish Three Meat Ragout (Karjalan Paisti) - Recipe #20053&#34;

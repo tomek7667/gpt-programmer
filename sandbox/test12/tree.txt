@@ -1,13 +1,11 @@
-tree:
-  1:
-    abc:
-      ghi:
-        xyz.txt
-      jkl:
-        xyz.txt
-    def:
-      ghi:
-        pqr:
-          xyz.txt
-      mno:
-        xyz.txt
+abc:
+    ghi:
+      xyz.txt: {}
+    jkl:
+      xyz.txt: {}
+def:
+    ghi:
+      pqr:
+        xyz.txt: {}
+mno:
+      xyz.txt: {}
