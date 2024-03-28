@@ -25,6 +25,15 @@
 
 1. Run `yarn start` to start the API that will interact with the model
 
+## Roadmap 1.1.0
+
+- [ ] Create UI for using the application
+  - [ ] Add a way to select the model and directory to work in (default: tmp dir)
+  - [ ] Add a way to select the action (default write task list)
+  - [ ] Visualization of what's going on inside the directory
+- [ ] Add more return types to make the tester better
+- [ ] Improve contexts and add more regression tests
+
 ## Roadmap 1.0.0
 
 - [x] Add possibility for the model to interact with the filesystem *(read, write, delete files and directories, preferably in a sandbox new directory - might be tricky to edit projects later)* with actions.
